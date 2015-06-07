@@ -9,7 +9,7 @@ angular.module("app.controllers",[
 		LoginFactory.login($scope.user).then(
 				function(response){			
 					$scope.user.password = ""; // Borrar la contraseña, ya que solo se necesita el token
-					store.set('token', response.data);
+					store.set('tokenConsultora', response.data);
 					$location.url("/home");
 				},
 				

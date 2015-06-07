@@ -20,7 +20,7 @@ config(['$routeProvider', 'jwtInterceptorProvider', '$httpProvider', function($r
   $routeProvider.otherwise({redirectTo: '/', templateUrl: 'views/login.html'});
   
   jwtInterceptorProvider.tokenGetter = function(store){
-	  return store.get('token');
+	  return store.get('tokenConsultora');
   };
   
   $httpProvider.interceptors.push('jwtInterceptor');
@@ -31,11 +31,11 @@ config(['$routeProvider', 'jwtInterceptorProvider', '$httpProvider', function($r
 	
 	$rootScope.$on("$routeChangeStart", function (event, next, current) {
 	    if (next.data && next.data.requiresLogin) {
-	    	if(!store.get('token')){
+	    	if(!store.get('tokenConsultora')){
 	    		event.preventDefault();
 	    		$location.path('/login');
 	    	}else{
-	    		if(jwtHelper.isTokenExpired(store.get('token'))){
+	    		if(jwtHelper.isTokenExpired(store.get('tokenConsultora'))){
 	    			event.preventDefault();
 		    		$location.path('/login');
 	    		}

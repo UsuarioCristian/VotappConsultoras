@@ -40,7 +40,7 @@ value('version', '0.1')
 			// el usuario lo ve x un momento
 			
 
-			return $http.post('http://localhost:8080/Votapp/services/usuario/loginAdmin', usuario)
+			return $http.post('http://localhost:8080/Votapp/services/usuario/loginConsultora', usuario)
 		}
 	}
 }])
