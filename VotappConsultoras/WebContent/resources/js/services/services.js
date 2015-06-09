@@ -13,6 +13,12 @@ value('version', '0.1')
 			
 			dataConsultora.passAdminConsultora = CryptoJS.SHA256(dataConsultora.passAdminConsultora).toString(CryptoJS.enc.Hex);
 			return $http.post('http://localhost:8080/Votapp/services/consultoras/protected/crear', dataConsultora)
+		},
+		
+		crearEncuestador:function(encuestador){
+			encuestador.password = CryptoJS.SHA256(encuestador.password).toString(CryptoJS.enc.Hex);
+			
+			return $http.post('http://localhost:8080/Votapp/services/consultoras/protected/crearEncuestador', encuestador);
 		}
 	}
 	

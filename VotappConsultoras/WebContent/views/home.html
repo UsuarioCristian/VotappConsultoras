@@ -1,15 +1,40 @@
 <div id="first">
-		<div class="container">
-			<div class="center-block">
-					<a href="#second" du-smooth-scroll class="btn btn-success botonNav" > Servicios </a>
+		<div class="center-block">
+			<div class="container">
+					<a href="#second" du-smooth-scroll class="btn btn-success botonNav" > Alta Encuestador </a>
 			</div>
 		</div>			
 	</div>
 
-	<div id="second">
+<div id="second">
+	<div class="center-block">
 		<div class="container">
-			<div class="center-block">
-					<a href="#first" du-smooth-scroll class="btn btn-primary btn-block botonNav"> Inicio </a>
+			<a href="#first" du-smooth-scroll class="btn btn-primary btn-block botonNav"> Inicio </a>
+			<div class="row">
+				<form role="form" >
+					
+						<div class="col-xs-8">
+							<div class="form-group">										
+							
+								<label for="nombre" class="control-label">Nombre Encuestador:</label>
+								<input type="text" class="form-control" id="nombre" ng-model="encuestador.username" placeholder="Username">
+							</div>
+						</div>
+						
+						<div class="col-xs-8">
+							<div class="form-group">		
+							
+								<label for="pass" class="control-label">Contraseña Encuestador:</label>
+								<input type="password" class="form-control" id="pass" ng-model="encuestador.password" placeholder="Password">
+							</div>
+						</div>
+						
+						<div class="col-xs-8">						
+	
+							<button type="submit" class="btn btn-success btn-block" id="confirmar" name="confirmar" ng-click="altaEncuestador()">Enviar</button>
+						</div>
+				</form>
 			</div>
 		</div>
 	</div>
+</div>

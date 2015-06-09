@@ -21,7 +21,7 @@ body{
 #second{	
 	width: 100%;
 	height: 100%;
-	background-color: #444;    
+	background-color: #aaa;    
 }
 
 #botonNav{
@@ -31,5 +31,8 @@ body{
 	/*width: 50%;*/
     margin: 0 auto;
 	text-align: center;
-	border: 5px solid red;
+	
+	position: relative;
+	top: 20%;
+	
 }
