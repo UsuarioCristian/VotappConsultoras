@@ -3,22 +3,22 @@
 
 // Declare app level module which depends on filters, and services
 angular.module('app', [
-  'ngRoute',
+  'ui.router',
   'angular-storage',
   'angular-jwt',
   //'app.filters',
   'app.services',
   //'app.directives',
   'app.controllers','duScroll'
-]).
-config(['$routeProvider', 'jwtInterceptorProvider', '$httpProvider', function($routeProvider, jwtInterceptorProvider, $httpProvider) {
-  $routeProvider.when('/login', {templateUrl: 'views/login.html', controller: 'LoginController'});
-  $routeProvider.when('/consultora', {templateUrl: 'index2.html', controller: 'ConsultoraController'});
-  $routeProvider.when('/', {templateUrl: 'views/login.html', controller: 'LoginController'});
-  $routeProvider.when('/home', {templateUrl: 'views/home.html',  controller: 'HomeController', data:{requiresLogin:true} });
-  $routeProvider.when('/crearConsultora', {templateUrl: 'views/altaConsultora.html',  controller: 'ConsultoraController'});
-  $routeProvider.otherwise({redirectTo: '/', templateUrl: 'views/login.html'});
+]) 
   
+.config(['$urlRouterProvider', '$stateProvider','jwtInterceptorProvider', '$httpProvider', function($urlRouterProvider, $stateProvider,jwtInterceptorProvider, $httpProvider) {
+		
+	$urlRouterProvider.otherwise('/');
+		
+	$stateProvider.state('login', {url: '/login', templateUrl: 'views/login.html', controller: 'LoginController'})
+	.state('home', {url:'/', templateUrl: 'views/home.html',  controller: 'HomeController', data:{requiresLogin:true} })
+ 
   jwtInterceptorProvider.tokenGetter = function(store){
 	  return store.get('tokenConsultora');
   };
@@ -27,17 +27,17 @@ config(['$routeProvider', 'jwtInterceptorProvider', '$httpProvider', function($r
   
 }])
 
-.run(['$rootScope','jwtHelper', 'store', '$location', function($rootScope, jwtHelper, store, $location){
+.run(['$rootScope','jwtHelper', 'store', '$state', function($rootScope, jwtHelper, store, $state){
 	
-	$rootScope.$on("$routeChangeStart", function (event, next, current) {
+	$rootScope.$on("$stateChangeStart", function (event, next, current) {
 	    if (next.data && next.data.requiresLogin) {
 	    	if(!store.get('tokenConsultora')){
 	    		event.preventDefault();
-	    		$location.path('/login');
+	    		$state.go('login');
 	    	}else{
 	    		if(jwtHelper.isTokenExpired(store.get('tokenConsultora'))){
 	    			event.preventDefault();
-		    		$location.path('/login');
+		    		$state.go('login');
 	    		}
 	    	}	    	 
 	    }
