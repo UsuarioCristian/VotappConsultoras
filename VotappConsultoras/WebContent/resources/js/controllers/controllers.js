@@ -48,7 +48,7 @@ angular.module("app.controllers",[
 }])
 
 
-.controller('HomeController', ['$scope', 'ConsultoraFactory', 'jwtHelper','store', function($scope, ConsultoraFactory, jwtHelper, store){
+.controller('HomeController', ['$scope', 'ConsultoraFactory', 'EleccionFactory','jwtHelper','store', function($scope, ConsultoraFactory, EleccionFactory, jwtHelper, store){
 			
 	$scope.altaEncuestador = function(){
 		
@@ -71,6 +71,19 @@ angular.module("app.controllers",[
 		)
 		
 	};
+	
+	$scope.elecciones = [];
+	$scope.getEleccionesActuales = function() {
+		EleccionFactory.getEleccionesActuales().then(
+				function(response) {
+					$scope.elecciones = response.data;
+				},
+				function(response){
+					//error messagge
+					console.log("Error en la obtencion de elecciones"+ response.data);
+				}
+		)
+	}
 	
 	
 }])

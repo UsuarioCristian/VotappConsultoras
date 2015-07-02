@@ -51,6 +51,12 @@ value('version', '0.1')
 	}
 }])
 
-.factory('UsuarioFactory', ['$http',function($http) {
+.factory('EleccionFactory', ['$http',function($http) {
+	return{
+		getEleccionesActuales:function(){
+			return $http.get('http://localhost:8080/Votapp/services/eleccion/protected/getEleccionesActuales')
+		}
+	}
 	
 }])
+

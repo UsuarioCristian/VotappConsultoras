@@ -2,6 +2,7 @@
 		<div class="center-block">
 			<div class="container">
 					<a href="#second" du-smooth-scroll class="btn btn-success botonNav" > Alta Encuestador </a>
+					<a href="#third" du-smooth-scroll class="btn btn-danger botonNav" > Seccion Elecciones </a>
 			</div>
 		</div>			
 	</div>
@@ -37,4 +38,20 @@
 			</div>
 		</div>
 	</div>
+</div>
+
+<div id="third">
+	<div class="center-block">
+			<div class="container">
+					<a href="#first" du-smooth-scroll class="btn btn-success botonNav" > Inicio </a>
+					<button class="btn btn-info" ng-click="getEleccionesActuales()"> Mostrar Elecciones </button>
+					<div>
+						<ul>
+							<li ng-repeat="eleccion in elecciones">
+								{{eleccion.nombre}}
+							</li>
+						</ul>
+					</div>
+			</div>
+		</div>
 </div>
