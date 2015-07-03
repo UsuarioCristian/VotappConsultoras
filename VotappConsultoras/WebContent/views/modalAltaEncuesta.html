@@ -1,0 +1,29 @@
+
+<div class="modal-header">
+	<h3 class="modal-title">Definición de preguntas para {{eleccion.nombre}}</h3>
+</div>
+<div class="modal-body ">
+	<div class="form-group">
+		<label>Seleccione la pregunta principal</label>
+        <div class="radio">
+            <label><input type="radio" value="Candidato" ng-model="preguntaPrincipal.pregunta">
+                Por Candidato
+            </label>
+        </div>
+        <div class="radio">
+            <label><input type="radio"  value="Partido" ng-model="preguntaPrincipal.pregunta">
+                Por Partido
+            </label>
+        </div>
+        <label>Seleccione las preguntas extras:</label><br/>
+        <label><input type="checkbox" ng-model="checkboxModel.value1"> Agregar pregunta de Edad </label><br/>
+		<label><input type="checkbox" ng-model="checkboxModel.value2"> Agregar pregunta de Sexo </label><br/>
+		<label><input type="checkbox" ng-model="checkboxModel.value3"> Agregar pregunta de Nivel de estudio </label><br/>
+		<label><input type="checkbox" ng-model="checkboxModel.value4"> Agregar pregunta de Lista </label><br/>
+	
+    </div>
+</div>
+<div class="modal-footer">
+	<button class="btn btn-primary" ng-click="ok()">OK</button>
+	<button class="btn btn-danger" ng-click="cancel()">Cancel</button>
+</div>

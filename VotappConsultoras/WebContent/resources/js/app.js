@@ -9,7 +9,8 @@ angular.module('app', [
   //'app.filters',
   'app.services',
   //'app.directives',
-  'app.controllers','duScroll'
+  'app.controllers','duScroll',
+  'ui.bootstrap',
 ]) 
   
 .config(['$urlRouterProvider', '$stateProvider','jwtInterceptorProvider', '$httpProvider', function($urlRouterProvider, $stateProvider,jwtInterceptorProvider, $httpProvider) {

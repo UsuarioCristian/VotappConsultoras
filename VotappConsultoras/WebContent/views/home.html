@@ -1,5 +1,5 @@
 <div id="first">
-		<div class="center-block">
+		<div class="centrar">
 			<div class="container">
 					<a href="#second" du-smooth-scroll class="btn btn-success botonNav" > Alta Encuestador </a>
 					<a href="#third" du-smooth-scroll class="btn btn-danger botonNav" > Seccion Elecciones </a>
@@ -8,7 +8,7 @@
 	</div>
 
 <div id="second">
-	<div class="center-block">
+	<div class="centrar">
 		<div class="container">
 			<a href="#first" du-smooth-scroll class="btn btn-primary btn-block botonNav"> Inicio </a>
 			<div class="row">
@@ -40,18 +40,22 @@
 	</div>
 </div>
 
-<div id="third">
-	<div class="center-block">
+<div id="third" ng-controller="ThirdController">
+	<div class="centrar">
 			<div class="container">
 					<a href="#first" du-smooth-scroll class="btn btn-success botonNav" > Inicio </a>
 					<button class="btn btn-info" ng-click="getEleccionesActuales()"> Mostrar Elecciones </button>
-					<div>
-						<ul>
-							<li ng-repeat="eleccion in elecciones">
-								{{eleccion.nombre}}
-							</li>
-						</ul>
+			<div class="row">
+				<div class="form-group">
+					<div class="radio" ng-repeat="eleccion in elecciones">
+						<label  >
+							<input type="radio" ng-value="eleccion" ng-model="seleccion.eleccion" ng-click="openModal()" id="{{eleccion}}"> {{eleccion.nombre}}
+						</label>
 					</div>
+					<div>You chose {{seleccion.eleccion.nombre}}</div>
+
+				</div>
 			</div>
+		</div>
 		</div>
 </div>
