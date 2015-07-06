@@ -9,12 +9,7 @@ value('version', '0.1')
 		getConsultora:function(idConsultora){
 			return $http.get('http://localhost:8080/Votapp/services/consultoras/'+idConsultora)
 		},
-		crearConsultora:function(dataConsultora){
 			
-			dataConsultora.passAdminConsultora = CryptoJS.SHA256(dataConsultora.passAdminConsultora).toString(CryptoJS.enc.Hex);
-			return $http.post('http://localhost:8080/Votapp/services/consultoras/protected/crear', dataConsultora)
-		},
-		
 		crearEncuestador:function(encuestador){
 			encuestador.password = CryptoJS.SHA256(encuestador.password).toString(CryptoJS.enc.Hex);
 			
@@ -55,6 +50,15 @@ value('version', '0.1')
 	return{
 		getEleccionesActuales:function(){
 			return $http.get('http://localhost:8080/Votapp/services/eleccion/protected/getEleccionesActuales')
+		}
+	}
+	
+}])
+
+.factory('EncuestaFactory', ['$http',function($http) {
+	return{
+		crearEncuesta:function(dataEncuesta){
+			return $http.post('http://localhost:8080/Votapp/services/encuesta/protected/crear', dataEncuesta)
 		}
 	}
 	

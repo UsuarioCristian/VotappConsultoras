@@ -88,10 +88,9 @@ angular.module("app.controllers",[
 	
 }])
 
-.controller('ThirdController', ['$scope', '$modal', function($scope, $modal) {
+.controller('ThirdController', ['$scope', '$modal', 'EncuestaFactory', function($scope, $modal, EncuestaFactory) {
 	$scope.seleccion = {eleccion : null};
-	$scope.items = ['item1', 'item2', 'item3'];
-	
+		
 	$scope.openModal = function () {
 
 	    var modalInstance = $modal.open({
@@ -99,35 +98,63 @@ angular.module("app.controllers",[
 	      templateUrl: 'views/modalAltaEncuesta.html',
 	      controller: 'ModalInstanceCtrl',
 	      //size: size,
-	      resolve: {
-	        items: function () {
-	          return $scope.items;
-	        },
+	      resolve: {	        
 	        eleccion: function () {
 	          return $scope.seleccion.eleccion;
 	        }
 	      }
 	    });
 	    
-	    modalInstance.result.then(function (selectedItem) {
-	        $scope.selected = selectedItem;
-	      }, function () {
-	        //$log.info('Modal dismissed at: ' + new Date());
+	    modalInstance.result.then(
+	    	function (dataEncuesta) {//selectedItem
+	    		//$scope.selected = selectedItem;
+	    		
+	    		EncuestaFactory.crearEncuesta(dataEncuesta).then(
+	    				function(response){
+	    					
+	    				},
+	    				
+	    				function(response){
+	    					//error messagge
+	    					console.log("Error en la creacion del Encuestador"+ response.data);
+	    				}
+	    		)
+	    		
+	    		
+	      },
+	      	function () {
+	        //$log.info('Modal dismissed at: ' + new Date());//Si apreto cancelar en el modal
 	      });
 	};
 			
 	
 }])
 
-.controller('ModalInstanceCtrl', ['$scope', '$modalInstance', 'items','eleccion', function($scope, $modalInstance, items, eleccion) {
-	$scope.items = items;
+.controller('ModalInstanceCtrl', ['$scope', '$modalInstance','eleccion', function($scope, $modalInstance, eleccion) {//items
+	
 	$scope.eleccion = eleccion;
-	$scope.selected = {
-			item: $scope.items[0]
-	};
 	
 	$scope.ok = function () {
-		$modalInstance.close($scope.selected.item);
+		/*2 formas de hacerlo, puedo llamar el servicio desde aqui o desde el result del modalInstance*/
+		var esPorCandidato;
+		if($scope.preguntaPrincipal.pregunta == 'Candidato')
+			esPorCandidato : true;
+		else
+			esPorCandidato : false;
+		
+		var dataEncuesta = {
+				idEleccion : eleccion.id,
+				porCandidato : esPorCandidato,
+				nombre : $scope.checkboxModel.value0,
+				preguntarLista : $scope.checkboxModel.value1,
+				preguntarEdad : $scope.checkboxModel.value2,
+				preguntarSexo : $scope.checkboxModel.value3,
+				preguntarNivelEstudio : $scope.checkboxModel.value4,
+				cantidadRespuestas : $scope.checkboxModel.value5,
+				
+		}
+		
+		$modalInstance.close(dataEncuesta);
 	};
 
 	$scope.cancel = function () {
@@ -138,10 +165,12 @@ angular.module("app.controllers",[
 		pregunta : 'Candidato'
 	};
 	$scope.checkboxModel = {
-		value1 : false,//edad
-		value2 : false,//sexo
-		value3 : false,//nivel estudio
-		value4 : false// listas
+		value0 : "", // Nombre de la encuesta
+		value1 : false,// Activar pregunta de que lista voto
+		value2 : false,// Activar pregunta de edad
+		value3 : false,// Activar pregunta de sexo
+		value4 : false, // Activar pregunta de nivel de estudio
+		value5 : 0// num de respuestas 
 	};
 	
 	
