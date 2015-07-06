@@ -130,7 +130,7 @@ angular.module("app.controllers",[
 	
 }])
 
-.controller('ModalInstanceCtrl', ['$scope', '$modalInstance','eleccion', function($scope, $modalInstance, eleccion) {//items
+.controller('ModalInstanceCtrl', ['$scope', '$modalInstance','eleccion', 'jwtHelper', 'store', function($scope, $modalInstance, eleccion, jwtHelper, store) {//items
 	
 	$scope.eleccion = eleccion;
 	
@@ -138,9 +138,12 @@ angular.module("app.controllers",[
 		/*2 formas de hacerlo, puedo llamar el servicio desde aqui o desde el result del modalInstance*/
 		var esPorCandidato;
 		if($scope.preguntaPrincipal.pregunta == 'Candidato')
-			esPorCandidato : true;
+			esPorCandidato = true;
 		else
-			esPorCandidato : false;
+			esPorCandidato = false;
+		
+		var tokenConsultora = store.get('tokenConsultora');
+		var decodedToken = jwtHelper.decodeToken(tokenConsultora);
 		
 		var dataEncuesta = {
 				idEleccion : eleccion.id,
@@ -151,6 +154,7 @@ angular.module("app.controllers",[
 				preguntarSexo : $scope.checkboxModel.value3,
 				preguntarNivelEstudio : $scope.checkboxModel.value4,
 				cantidadRespuestas : $scope.checkboxModel.value5,
+				idConsultora : decodedToken.consultoraID,
 				
 		}
 		
