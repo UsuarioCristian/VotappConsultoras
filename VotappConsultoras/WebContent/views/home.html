@@ -1,3 +1,36 @@
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+
+        <button type="button" class="navbar-toggle" ng-init="navCollapsed = true" ng-click="navCollapsed = !navCollapsed">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" ui-sref="home">Votapp</a>
+      </div>
+    
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" ng-class="!navCollapsed && 'in'">
+      
+        <ul class="nav navbar-nav">
+          <li ><a ui-sref="crearConsultora">Nuevo Encuestador</a></li>
+          
+          <li dropdown>
+            <a href="#" dropdown-toggle>Encuestas <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a ui-sref="crearEleccion">Nueva Encuesta</a></li>
+            </ul>
+          </li>
+          
+        </ul>
+        <ul class="nav pull-right">
+        <li><a href="#">Salir</a></li>
+        </ul>
+                        
+      </div><!-- /.navbar-collapse -->
+    </nav>
 <div id="first">
 		<div class="centrar">
 			<div class="container">
@@ -11,29 +44,31 @@
 	<div class="centrar">
 		<div class="container">
 			<a href="#first" du-smooth-scroll class="btn btn-primary btn-block botonNav"> Inicio </a>
-			<div class="row">
-				<form role="form" >
-					
-						<div class="col-xs-8">
+			<div style="height: auto;margin: 0px auto;" class="row">
+				<form style="width: 30%;margin: 0px auto;" role="form" >
+					<div class="row">
+						
 							<div class="form-group">										
 							
 								<label for="nombre" class="control-label">Nombre Encuestador:</label>
 								<input type="text" class="form-control" id="nombre" ng-model="encuestador.username" placeholder="Username">
 							</div>
-						</div>
+					</div>
+					<div class="row">	
 						
-						<div class="col-xs-8">
 							<div class="form-group">		
 							
 								<label for="pass" class="control-label">Contraseña Encuestador:</label>
 								<input type="password" class="form-control" id="pass" ng-model="encuestador.password" placeholder="Password">
-							</div>
+							
 						</div>
-						
-						<div class="col-xs-8">						
+					</div>	
+					<div class="row">
+						<div class="col-xs-4">						
 	
 							<button type="submit" class="btn btn-success btn-block" id="confirmar" name="confirmar" ng-click="altaEncuestador()">Enviar</button>
 						</div>
+					</div>
 				</form>
 			</div>
 		</div>
