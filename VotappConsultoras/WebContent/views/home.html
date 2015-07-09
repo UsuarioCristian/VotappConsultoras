@@ -1,49 +1,10 @@
-<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-      <!-- Brand and toggle get grouped for better mobile display -->
-      <div class="navbar-header">
-
-        <button type="button" class="navbar-toggle" ng-init="navCollapsed = true" ng-click="navCollapsed = !navCollapsed">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" ui-sref="home">Votapp</a>
-      </div>
-    
-      <!-- Collect the nav links, forms, and other content for toggling -->
-      <div class="collapse navbar-collapse" ng-class="!navCollapsed && 'in'">
-      
-        <ul class="nav navbar-nav">
-          <li ><a ui-sref="crearConsultora">Nuevo Encuestador</a></li>
-          
-          <li dropdown>
-            <a href="#" dropdown-toggle>Encuestas <b class="caret"></b></a>
-            <ul class="dropdown-menu">
-              <li><a ui-sref="crearEleccion">Nueva Encuesta</a></li>
-            </ul>
-          </li>
-          
-        </ul>
-        <ul class="nav pull-right">
-        <li><a href="#">Salir</a></li>
-        </ul>
-                        
-      </div><!-- /.navbar-collapse -->
-    </nav>
-<div id="first">
-		<div class="centrar">
-			<div class="container">
-					<a href="#second" du-smooth-scroll class="btn btn-success botonNav" > Alta Encuestador </a>
-					<a href="#third" du-smooth-scroll class="btn btn-danger botonNav" > Seccion Elecciones </a>
-			</div>
-		</div>			
+<div ng-include src="'layout/header.html'"></div>
+<div id="first">		
 	</div>
 
 <div id="second">
 	<div class="centrar">
 		<div class="container">
-			<a href="#first" du-smooth-scroll class="btn btn-primary btn-block botonNav"> Inicio </a>
 			<div style="height: auto;margin: 0px auto;" class="row">
 				<form style="width: 30%;margin: 0px auto;" role="form" >
 					<div class="row">
