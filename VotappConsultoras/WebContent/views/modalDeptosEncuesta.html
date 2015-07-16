@@ -1,0 +1,20 @@
+<div class="modal-header">
+	<h1> ESTO ES EL HEADER</h1>
+</div>
+
+<div class="modal-body ">
+	
+	<div class="form-group" ng-repeat="depto in departamentos">
+		<div class="row  col-md-6">			
+			<input type="checkbox" value="{{depto}}" ng-checked="listaEncuestaDeptos.indexOf(depto) > -1" ng-click="toggleSelection(depto)"> {{depto.nombre}}
+		</div>
+		<div class="row col-md-6">
+			<input type="number" class="form-control" min="0" ng-model="depto.cantidadRespuestas">			
+		</div>
+	</div>
+</div>
+
+<div class="modal-footer">	
+	<button class="btn btn-danger" ng-click="cancel()">Cancelar</button>
+	<button class="btn btn-primary" ng-click="ok()">Aceptar</button>
+</div>

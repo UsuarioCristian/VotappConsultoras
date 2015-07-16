@@ -28,7 +28,13 @@
 		<div class="checkbox"><label><input type="checkbox" ng-model="checkboxModel.value4"> Preguntar Nivel de estudio </label></div>
 	</div>
     <div class="form-group">
-		<label>Indicar el total de respuestas: <input type="number" min="0" ng-model="checkboxModel.value5"></label>
+    	<div ng-show = "eleccion.tipoEleccion != 'Departamental'">
+    		<label>Indicar el total de respuestas: <input type="number" min="0" ng-model="checkboxModel.value5"></label>
+    	</div>
+    	<div ng-show = "eleccion.tipoEleccion == 'Departamental'">
+    		<button class="btn btn-success" ng-click="seleccionarDeptos()">Seleccionar Departamentos</button>
+    	</div>
+		
 	</div>
     
 </div>

@@ -130,9 +130,43 @@ angular.module("app.controllers",[
 	
 }])
 
-.controller('ModalInstanceCtrl', ['$scope', '$modalInstance','eleccion', 'jwtHelper', 'store', function($scope, $modalInstance, eleccion, jwtHelper, store) {//items
+.controller('ModalInstanceCtrl', ['$scope', '$modalInstance','eleccion', 'jwtHelper', 'store', '$modal', function($scope, $modalInstance, eleccion, jwtHelper, store, $modal) {//items
 	
 	$scope.eleccion = eleccion;
+	
+	if(eleccion.tipoEleccion == 'Departamental'){
+		
+		var deptos = ['Artigas', 'Cerro Largo', 'Durazno', 'Florida', 'Maldonado', 'Paysandú', 'Rivera', 'Salto',
+		                 'Soriano', 'Treinta y Tres', 'Canelones', 'Colonia', 'Flores', 'Lavalleja', 'Montevideo', 'Río Negro',
+		                 'Rocha', 'San José', 'Tacuarembó']
+		
+		$scope.departamentos = deptos.sort();
+		
+		$scope.seleccionarDeptos = function(){
+			
+			var modalInstance = $modal.open({
+			      //animation: $scope.animationsEnabled,
+			      templateUrl: 'views/modalDeptosEncuesta.html',
+			      controller: 'ModalDeptosEncuestaCtrl',
+			      //size: size,
+			      resolve: {	        
+			    	  deptos: function () {
+			          return $scope.departamentos;
+			        }
+			      }
+			    });
+			
+			modalInstance.result.then(
+			    	function (listaEncuestaDeptos) {			    				    				    		
+			    		$scope.listaEncuestaDeptos = listaEncuestaDeptos;
+			      },
+			      	function () {
+			       
+			      });
+			
+		}
+	}
+	
 	
 	$scope.ok = function () {
 		/*2 formas de hacerlo, puedo llamar el servicio desde aqui o desde el result del modalInstance*/
@@ -155,9 +189,9 @@ angular.module("app.controllers",[
 				preguntarNivelEstudio : $scope.checkboxModel.value4,
 				cantidadRespuestas : $scope.checkboxModel.value5,
 				idConsultora : decodedToken.consultoraID,
+				listaEncuestaDeptos : $scope.listaEncuestaDeptos
 				
 		}
-		
 		$modalInstance.close(dataEncuesta);
 	};
 
@@ -174,8 +208,42 @@ angular.module("app.controllers",[
 		value2 : false,// Activar pregunta de edad
 		value3 : false,// Activar pregunta de sexo
 		value4 : false, // Activar pregunta de nivel de estudio
-		value5 : 0// num de respuestas 
+		value5 : 0// num de respuestas
 	};
+	
+	
+}])
+
+.controller('ModalDeptosEncuestaCtrl', ['$scope','$modalInstance', 'deptos', function($scope, $modalInstance, deptos){
+	
+	$scope.departamentos = [];
+	$scope.listaEncuestaDeptos = []
+	
+	for ( var i = 0; i <  deptos.length; i++) {
+		var encuestaDepto = {
+				nombre : deptos[i],
+				cantidadRespuestas : 0
+		}
+		$scope.departamentos.push(encuestaDepto);
+	}
+	
+	$scope.toggleSelection = function toggleSelection(depto) {		
+		var idx = $scope.listaEncuestaDeptos.indexOf(depto);
+	    if (idx > -1) {
+	    	$scope.listaEncuestaDeptos.splice(idx, 1);
+	    }
+	    else {
+	    	$scope.listaEncuestaDeptos.push(depto);
+	    }
+	};
+	
+	$scope.cancel = function () {
+		$modalInstance.dismiss('cancel');
+	};
+	
+	$scope.ok = function () {
+		$modalInstance.close($scope.listaEncuestaDeptos);
+	}
 	
 	
 }])
