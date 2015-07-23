@@ -4,16 +4,16 @@
 // In this case it is a simple value service.
 angular.module('app.services', []).
 value('version', '0.1')
-.factory('ConsultoraFactory',['$http', function($http) {
+.factory('ConsultoraFactory',['$http','ApiEndpointFactory', function($http, ApiEndpointFactory) {
 	return{
 		getConsultora:function(idConsultora){
-			return $http.get('http://localhost:8080/Votapp/services/consultoras/'+idConsultora)
+			return $http.get(ApiEndpointFactory.ApiEndpoint +'/Votapp/services/consultoras/'+idConsultora)
 		},
 			
 		crearEncuestador:function(encuestador){
 			encuestador.password = CryptoJS.SHA256(encuestador.password).toString(CryptoJS.enc.Hex);
 			
-			return $http.post('http://localhost:8080/Votapp/services/consultoras/protected/crearEncuestador', encuestador);
+			return $http.post(ApiEndpointFactory.ApiEndpoint +'/Votapp/services/consultoras/protected/crearEncuestador', encuestador);
 		}
 	}
 	
@@ -22,7 +22,7 @@ value('version', '0.1')
 	
 }])
 
-.factory('LoginFactory', ['$http',function($http) {
+.factory('LoginFactory', ['$http','ApiEndpointFactory', function($http, ApiEndpointFactory) {
 	return{
 		login:function(user){
 			
@@ -41,26 +41,36 @@ value('version', '0.1')
 			// el usuario lo ve x un momento
 			
 
-			return $http.post('http://localhost:8080/Votapp/services/usuario/loginConsultora', usuario)
+			return $http.post(ApiEndpointFactory.ApiEndpoint +'/Votapp/services/usuario/loginConsultora', usuario)
 		}
 	}
 }])
 
-.factory('EleccionFactory', ['$http',function($http) {
+.factory('EleccionFactory', ['$http','ApiEndpointFactory', function($http, ApiEndpointFactory) {
 	return{
 		getEleccionesActuales:function(){
-			return $http.get('http://localhost:8080/Votapp/services/eleccion/protected/getEleccionesActuales')
+			return $http.get(ApiEndpointFactory.ApiEndpoint +'/Votapp/services/eleccion/protected/getEleccionesActuales')
 		}
 	}
 	
 }])
 
-.factory('EncuestaFactory', ['$http',function($http) {
+.factory('EncuestaFactory', ['$http','ApiEndpointFactory', function($http, ApiEndpointFactory) {
 	return{
 		crearEncuesta:function(dataEncuesta){
-			return $http.post('http://localhost:8080/Votapp/services/encuesta/protected/crear', dataEncuesta)
+			return $http.post(ApiEndpointFactory.ApiEndpoint +'/Votapp/services/encuesta/protected/crear', dataEncuesta)
 		}
 	}
+	
+}])
+
+.factory('ApiEndpointFactory', ['$http','$location', function($http, $location) {
+	
+	var ApiEndpoint = $location.protocol() + "://" + $location.host() + ":" + $location.port();
+	
+	return{
+		ApiEndpoint : ApiEndpoint
+	}	
 	
 }])
 
