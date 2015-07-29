@@ -42,3 +42,29 @@ body{
 	top: 20%;
 	
 }
+
+
+h1 {
+	color: beige;
+    font-size: -webkit-xxx-large;
+    font-family: inherit;
+    font-style: normal;
+    font-variant-ligatures: initial;
+    margin-bottom: 25px;
+}
+
+strong {
+	color: #67C9FD;
+	font-size: x-large;
+ }
+
+.votapp{
+	color: #67C9FD;
+	font-size: x-large;
+    font-size: -webkit-xxx-large;
+}
+
+p{
+color: beige;font-size: larger;	
+	
+}
