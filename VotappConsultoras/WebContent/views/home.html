@@ -3,10 +3,10 @@
 	<div style="padding-top:20px;">
 	
 	<div class="row">
-	 <div class="col-xs-6 col-md-4" style="padding-top:5%">
-  <img class="img-responsive" src="resources/img/votapp.png" src="resources/img/votapp.png" alt="">
+	<div class="col-xs-6 col-md-4" style="padding-top:5%">
+  		<img class="img-responsive" src="resources/img/votapp.png" alt="">
   </div>
-  <div class="col-xs-12 col-sm-6 col-md-8" style="padding-top:10%">
+  <div class="col-md-8" style="padding-top:10%">
   		<h1>¡¡ Gracias por usar <strong class="votapp">VotAPP</strong> !!</h1>
 			<strong>Desde aquí, usted podrá:</strong>
 		<p>- Crear usuarios para realizar el trabajo de campo de manera mas fácil y efectiva.<br>
@@ -14,7 +14,7 @@
 		<br>Y más...</p><br>
 		<strong>¡¡ No exponga más a sus encuestadores !!</strong><br>
 		<p>Localice en tiempo real a un encuestador en peligro con nuestra aplicacion móvil.</p>
-		br>
+		
   </div>
  
 </div>
@@ -62,11 +62,8 @@
 							
 						</div>
 					</div>	
-					<div class="row">
-						<div class="col-xs-4">						
-	
-							<button type="submit" class="btn btn-success btn-block" id="confirmar" name="confirmar" ng-click="altaEncuestador()">Enviar</button>
-						</div>
+					<div class="row">				
+						<button type="submit" class="btn btn-success btn-block" id="confirmar" name="confirmar" ng-click="altaEncuestador()">Enviar</button>						
 					</div>
 				</form>
 			</div>
@@ -89,6 +86,22 @@
 					<div>You chose {{seleccion.eleccion.nombre}}</div>
 
 				</div>
+			</div>
+		</div>
+		</div>
+</div>
+
+<div id="fourth" ng-controller="FourthController">
+	<div class="centrar">
+		<div class="container">
+			<h1> Encuestas finalizadas:  </h1>
+			<div class="row">
+				<div class="col-lg-4" ng-repeat="encuesta in encuestasFinalizadas">
+					<h2>{{encuesta.nombre}}</h2>
+					
+					<p><a class="btn btn-block btn-info" ui-sref="encuesta({ encuestaId: encuesta.id})" role="button">Ver más »</a></p>
+				</div>
+				
 			</div>
 		</div>
 		</div>

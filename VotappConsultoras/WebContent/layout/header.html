@@ -14,17 +14,15 @@
       </div>
     
       <!-- Collect the nav links, forms, and other content for toggling -->
-      <div class="collapse navbar-collapse" ng-class="!navCollapsed && 'in'">
+      <div class="collapse navbar-collapse" ng-class="!navCollapsed && 'in'" >
       
         <ul class="nav navbar-nav">
-          <li ><a href="#second" du-smooth-scroll>Nuevo Encuestador</a></li>
-        <!--   <a href="#second" du-smooth-scroll class="btn btn-success botonNav" > Alta Encuestador </a> -->
-        
+          <li ><a href="#second" du-smooth-scroll class="btn btn-navbar" ng-click="navCollapsed = true">Nuevo Encuestador</a></li>        
           
           <li dropdown>
             <a href="#" dropdown-toggle>Encuestas <b class="caret"></b></a>
             <ul class="dropdown-menu">
-              <li><a href="#third" du-smooth-scroll>Nueva Encuesta</a></li>              
+              <li><a href="#third" du-smooth-scroll ng-click="navCollapsed = true">Nueva Encuesta</a></li>              
             </ul>
           </li>
           

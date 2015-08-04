@@ -11,6 +11,7 @@ angular.module('app', [
   //'app.directives',
   'app.controllers','duScroll',
   'ui.bootstrap',
+  'ngAnimate'
 ]) 
   
 .config(['$urlRouterProvider', '$stateProvider','jwtInterceptorProvider', '$httpProvider', function($urlRouterProvider, $stateProvider,jwtInterceptorProvider, $httpProvider) {
@@ -18,7 +19,18 @@ angular.module('app', [
 	$urlRouterProvider.otherwise('/');
 		
 	$stateProvider.state('login', {url: '/login', templateUrl: 'views/login.html', controller: 'LoginController'})
-	.state('home', {url:'/', templateUrl: 'views/home.html',  controller: 'HomeController', data:{requiresLogin:true} })
+	.state('home', {url:'/', templateUrl: 'views/home.html',  controller: 'HomeController', data:{requiresLogin:true},
+		resolve:{
+	        load:function(EncuestaFactory){	          
+	          return EncuestaFactory.getEncuestasFinalizadas();
+	        }
+	    }	})
+	
+	.state('encuesta', {
+		url: '/encuesta/{encuestaId}',
+		templateUrl: 'views/encuesta.html',
+		controller: 'EncuestaController',				
+	})	
  
   jwtInterceptorProvider.tokenGetter = function(store){
 	  return store.get('tokenConsultora');

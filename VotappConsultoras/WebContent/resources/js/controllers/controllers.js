@@ -248,7 +248,33 @@ angular.module("app.controllers",[
 	
 	$scope.ok = function () {
 		$modalInstance.close($scope.listaEncuestaDeptos);
-	}
-	
+	}	
 	
 }])
+
+.controller('FourthController', ['$scope', 'store', function($scope, store){
+	$scope.encuestasFinalizadas = store.get('encuestasFinalizadas');
+}])
+
+.controller('EncuestaController', ['$scope', '$stateParams', 'store', function($scope, $stateParams, store){
+	$scope.encuestasFinalizadas = store.get('encuestasFinalizadas');
+	var encontre = false;
+	var i = 0;
+	while(!encontre && i < $scope.encuestasFinalizadas.length){
+		if($scope.encuestasFinalizadas[i].id == $stateParams.encuestaId){
+			encontre = true;
+			$scope.encuesta = $scope.encuestasFinalizadas[i];
+		}else{
+			i++;
+		}
+			
+	}
+}])
+
+
+
+
+
+
+
+

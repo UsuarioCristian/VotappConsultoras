@@ -55,11 +55,23 @@ value('version', '0.1')
 	
 }])
 
-.factory('EncuestaFactory', ['$http','ApiEndpointFactory', function($http, ApiEndpointFactory) {
+.factory('EncuestaFactory', ['$http','ApiEndpointFactory', 'store','jwtHelper', function($http, ApiEndpointFactory, store, jwtHelper){
+			
 	return{
 		crearEncuesta:function(dataEncuesta){
 			return $http.post(ApiEndpointFactory.ApiEndpoint +'/Votapp/services/encuesta/protected/crear', dataEncuesta)
+		},
+		
+		getEncuestasFinalizadas:function(){
+			var tokenConsultora = store.get('tokenConsultora');
+			var decodedToken = jwtHelper.decodeToken(tokenConsultora);
+			var id = decodedToken.consultoraID;
+			$http.get(ApiEndpointFactory.ApiEndpoint +'/Votapp/services/encuesta/protected/getEncuestasFinalizadasByIdConsultora/'+ id)
+			.success(function(data){
+				store.set('encuestasFinalizadas', data);
+			})
 		}
+	
 	}
 	
 }])
