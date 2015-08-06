@@ -49,6 +49,12 @@ body{
 	
 }
 
+.centrarEncuesta {
+	/*width: 50%;*/
+    margin: 0 auto;
+	text-align: center;
+}
+
 
 h1 {
 	color: beige;
@@ -78,5 +84,5 @@ color: beige;font-size: larger;
 #seccionEleccion{
 	width: 100%;
 	height: 100%;
-    background-color: #444;
+    background-color: #777;
 }

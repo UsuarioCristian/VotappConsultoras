@@ -266,9 +266,88 @@ angular.module("app.controllers",[
 			$scope.encuesta = $scope.encuestasFinalizadas[i];
 		}else{
 			i++;
-		}
-			
+		}			
 	}
+	
+	/*******************************/
+	/*******Seccion Graficas********/
+	/*******************************/
+	var data = [];
+	var resultado = $scope.encuesta.resultado;
+	if($scope.encuesta.porCandidato){
+		var mapCandidatos = resultado.mapCandidatos;
+		var candidatos = $scope.encuesta.dataCandidatos;
+		
+		for(var i=0; i < candidatos.length; i++){
+			var candidato = candidatos[i];
+			var cantidad = mapCandidatos[candidato.id];
+			var dato = {
+	                name: candidato.nombre,
+	                y: cantidad
+	            }
+			data.push(dato);
+		}
+	}
+	
+		
+	var chartPie = new Highcharts.Chart({
+	    chart: {
+	            plotBackgroundColor: null,
+	            plotBorderWidth: null,
+	            plotShadow: false,
+	            type: 'pie',
+	            renderTo: 'container',
+	        },
+	        title: {
+	            text: 'Resultado encuesta (prueba)'
+	        },
+	        subtitle: {
+	        	text: 'Total encuestados: '+ $scope.encuesta.cantidadRespuestas,
+	        },
+	        tooltip: {
+	            pointFormat: '{series.name}: <b>{point.y}</b>'
+	        },
+	        plotOptions: {
+	            pie: {
+	                allowPointSelect: true,
+	                cursor: 'pointer',
+	                dataLabels: {
+	                    enabled: true,
+	                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+	                    style: {
+	                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+	                    }
+	                }
+	            }
+	        },
+	        series: [{
+	            name: "Total",
+	            colorByPoint: true,
+	            data : data
+//	            data: [{
+//	                name: "Microsoft Internet Explorer",
+//	                y: 56.33
+//	            }, {
+//	                name: "Chrome",
+//	                y: 24.03,
+//	                sliced: true,
+//	                selected: true
+//	            }, {
+//	                name: "Firefox",
+//	                y: 10.38
+//	            }, {
+//	                name: "Safari",
+//	                y: 4.77
+//	            }, {
+//	                name: "Opera",
+//	                y: 0.91
+//	            }, {
+//	                name: "Proprietary or Undetectable",
+//	                y: 0.2
+//	            }]
+	        }]
+	})
+	
 }])
 
 
