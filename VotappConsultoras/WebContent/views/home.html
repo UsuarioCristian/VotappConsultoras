@@ -3,10 +3,10 @@
 	<div style="padding-top:20px;">
 	
 	<div class="row">
-	<div class="col-xs-6 col-md-4" style="padding-top:5%">
+	<div class="col-xs-4 col-md-4" style="padding-top:5%">
   		<img class="img-responsive" src="resources/img/votapp.png" alt="">
   </div>
-  <div class="col-md-8" style="padding-top:10%">
+  <div class="col-md-8 " style="padding-top:10%">
   		<h1>¡¡ Gracias por usar <strong class="votapp">VotAPP</strong> !!</h1>
 			<strong>Desde aquí, usted podrá:</strong>
 		<p>- Crear usuarios para realizar el trabajo de campo de manera mas fácil y efectiva.<br>
@@ -96,12 +96,11 @@
 		<div class="container">
 			<h1> Encuestas finalizadas:  </h1>
 			<div class="row">
-				<div class="col-lg-4" ng-repeat="encuesta in encuestasFinalizadas">
-					<h2>{{encuesta.nombre}}</h2>
-					
-					<p><a class="btn btn-block btn-info" ui-sref="encuesta({ encuestaId: encuesta.id})" role="button">Ver más »</a></p>
+				<div class="col-lg-6 col-xs-6 col-sm-6 col-md-6" style="left: 20%;">
+					<div ng-repeat="encuesta in encuestasFinalizadas">
+						<p><a class="btn btn-block btn-info" ui-sref="encuesta({ encuestaId: encuesta.id})" role="button">{{encuesta.nombre}}</a></p>
+					</div>
 				</div>
-				
 			</div>
 		</div>
 		</div>

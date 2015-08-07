@@ -287,8 +287,20 @@ angular.module("app.controllers",[
 	            }
 			data.push(dato);
 		}
-	}
-	
+	}else{
+		var mapPartidos = resultado.mapPartidos;
+		var partidos = $scope.encuesta.dataPartidos;
+		
+		for(var i = 0; i < partidos.length; i++){
+			var partido = partidos[i];
+			var cantidad = mapPartidos[partido.id];
+			var dato = {
+					name: partido.nombre,
+					y: cantidad
+				}
+			data.push(dato);
+		}
+	}	
 		
 	var chartPie = new Highcharts.Chart({
 	    chart: {
@@ -324,29 +336,100 @@ angular.module("app.controllers",[
 	            name: "Total",
 	            colorByPoint: true,
 	            data : data
-//	            data: [{
-//	                name: "Microsoft Internet Explorer",
-//	                y: 56.33
-//	            }, {
-//	                name: "Chrome",
-//	                y: 24.03,
-//	                sliced: true,
-//	                selected: true
-//	            }, {
-//	                name: "Firefox",
-//	                y: 10.38
-//	            }, {
-//	                name: "Safari",
-//	                y: 4.77
-//	            }, {
-//	                name: "Opera",
-//	                y: 0.91
-//	            }, {
-//	                name: "Proprietary or Undetectable",
-//	                y: 0.2
-//	            }]
 	        }]
 	})
+	
+	/*************************Grafica por Edad*************************/
+	/******************************************************************/
+	if($scope.encuesta.preguntarEdad){
+		var serieEdad = [];
+		var de18a23 = resultado.mapEdad18a23;
+		var de24a30 = resultado.mapEdad24a30;
+		var de31a50 = resultado.mapEdad31a50;
+		var de51omas = resultado.mapEdad51omas;
+		
+		if($scope.encuesta.porCandidato){
+			var mapCandidatos = resultado.mapCandidatos;
+			var candidatos = $scope.encuesta.dataCandidatos;		
+			
+			for(var i=0; i < candidatos.length; i++){
+				var candidato = candidatos[i];
+				var cantidad18a23 = de18a23[candidato.id];
+				var cantidad24a30 = de24a30[candidato.id];
+				var cantidad31a50 = de31a50[candidato.id];
+				var cantidadde51omas = de51omas[candidato.id];
+				
+				var valor = {
+		                name: candidato.nombre,
+		                data: [cantidad18a23, cantidad24a30, cantidad31a50, cantidadde51omas]
+		            }
+				serieEdad.push(valor);
+			}
+		}else{
+			var mapPartidos = resultado.mapPartidos;
+			var partidos = $scope.encuesta.dataPartidos;
+			
+			for( var i = 0; i < partidos.length; i++){
+				var partido = partidos[i];
+				var cantidad18a23 = de18a23[partido.id];
+				var cantidad24a30 = de24a30[partido.id];
+				var cantidad31a50 = de31a50[partido.id];
+				var cantidadde51omas = de51omas[partido.id];
+				
+				var valor = {
+		                name: partido.nombre,
+		                data: [cantidad18a23, cantidad24a30, cantidad31a50, cantidadde51omas]
+		            }
+				serieEdad.push(valor);
+			}
+		}	
+		
+		var chartColumEdad = new Highcharts.Chart({
+		    chart: {
+		    	type: 'column',
+		    	renderTo: 'container2',
+		    },
+		    title: {
+	            text: 'Votos por edad'
+	        },
+	        subtitle: {
+	        	text: 'Total encuestados: '+ $scope.encuesta.cantidadRespuestas,
+	        },
+	        xAxis: {
+	            categories: [
+	                '18 a 23',
+	                '24 a 30',
+	                '31 a 50',
+	                'Mas de 50',
+	               
+	            ],
+	            crosshair: true
+	        },
+	        yAxis: {
+	            min: 0,
+	            title: {
+	                text: 'Cantidad de votos'
+	            }
+	        },
+	        tooltip: {
+	            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+	            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+	                '<td style="padding:0"><b> {point.y}</b></td></tr>',
+	            footerFormat: '</table>',
+	            shared: true,
+	            useHTML: true
+	        },
+	        plotOptions: {
+	            column: {
+	                pointPadding: 0.2,
+	                borderWidth: 0
+	            }
+	        },
+	        series: serieEdad
+	        
+		})
+	}
+	
 	
 }])
 
