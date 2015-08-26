@@ -7,7 +7,7 @@
 	    <label >Nombre encuesta</label>
         <input type="text" class="form-control" placeholder="Nombre" ng-model="checkboxModel.value0">
   	</div>  
-	<div class="form-group">
+	<div class="form-group" ng-hide="eleccion.tipoEleccion == 'Otra' || eleccion.tipoEleccion == 'Simple'">
     	<label>Seleccione la pregunta principal:</label>
         <div class="radio">
             <label><input type="radio" value="Candidato" ng-model="preguntaPrincipal.pregunta">
@@ -22,7 +22,7 @@
     </div>
     <div class="form-group">
         <label>Seleccione las preguntas extras:</label><br/>
-        <div class="checkbox"><label><input type="checkbox" ng-model="checkboxModel.value1"> Preguntar Lista elegida</label></div>
+        <div ng-hide="eleccion.tipoEleccion == 'Simple'" class="checkbox"><label><input type="checkbox" ng-model="checkboxModel.value1"> Preguntar Lista elegida</label></div>
         <div class="checkbox"><label><input type="checkbox" ng-model="checkboxModel.value2"> Preguntar Edad </label></div>
 		<div class="checkbox"><label><input type="checkbox" ng-model="checkboxModel.value3"> Preguntar Sexo </label></div>
 		<div class="checkbox"><label><input type="checkbox" ng-model="checkboxModel.value4"> Preguntar Nivel de estudio </label></div>
