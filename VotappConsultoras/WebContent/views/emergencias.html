@@ -6,7 +6,7 @@
 				<span ng-repeat="marker in marcadores">
 					<ui-gmap-marker coords="marker.coords" idkey="marker.id" click= "marker.click(marker.id)" options="marker.options" >
 						<ui-gmap-window options="marker.windowOptions" closeClick="closeClick(marker.id)">
-                			<div>HELLO WORLD!</div>
+                			<div>Encuestador : {{marker.nombreEncuestador}}</div>
             			</ui-gmap-window>
 					</ui-gmap-marker><!--show=marker.show -->
 				</span>

@@ -24,7 +24,10 @@ angular.module('app', [
 		resolve:{	        
 	        load: function(EncuestaFactory){
 	        	return EncuestaFactory.getEncuestasFinalizadas();
-	        }
+	        },
+	        loadEmergencias:function(EmergenciaFactory){	          
+		          return EmergenciaFactory.getEmergencias();
+		        }
 	    }	
 	})
 	
@@ -37,12 +40,7 @@ angular.module('app', [
 	.state('emergencias', {
 		url:'/emergencia',
 		templateUrl: 'views/emergencias.html',
-		controller: 'EmergenciaController',
-		resolve:{
-	        load:function(EmergenciaFactory){	          
-	          return EmergenciaFactory.getEmergencias();
-	        }
-	    }
+		controller: 'EmergenciaController',		
 	})
  
   jwtInterceptorProvider.tokenGetter = function(store){

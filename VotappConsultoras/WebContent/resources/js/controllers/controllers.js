@@ -476,7 +476,9 @@ angular.module("app.controllers",[
 	      		},
 	      		windowOptions:{
 	      			visible:false
-	      		}
+	      		},
+	      		
+	      		nombreEncuestador:$scope.emergencias[i].nombreEncuestador,
 	    	}
 	    	
 	    	$scope.marcadores.push(marker);
