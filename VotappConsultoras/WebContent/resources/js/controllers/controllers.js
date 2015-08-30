@@ -87,6 +87,7 @@ angular.module("app.controllers",[
 	
 	$scope.logout = function() {
 		store.remove('tokenConsultora');
+		store.remove('encuestasFinalizadas');
 		$state.go('login');
 	}
 	
@@ -252,8 +253,17 @@ angular.module("app.controllers",[
 	
 }])
 
-.controller('FourthController', ['$scope', 'store', function($scope, store){
+.controller('FourthController', ['$scope', 'store', 'EncuestaFactory', '$timeout',function($scope, store, EncuestaFactory, $timeout){
 	$scope.encuestasFinalizadas = store.get('encuestasFinalizadas');
+
+	if($scope.encuestasFinalizadas == null){
+		$timeout(function(){},500).then(
+				function(){
+					$scope.encuestasFinalizadas = store.get('encuestasFinalizadas');
+				},
+				function(){}		
+		);	
+	}
 }])
 
 .controller('EncuestaController', ['$scope', '$stateParams', 'store', function($scope, $stateParams, store){
@@ -433,6 +443,62 @@ angular.module("app.controllers",[
 	
 }])
 
+.controller('EmergenciaController', ['$scope', 'store',function($scope, store){
+	$scope.map = { center: { latitude: -34.8962, longitude: -56.1708 }, zoom: 16};
+	
+	$scope.emergencias = store.get('emergencias');
+	$scope.marcadores = [];
+	if($scope.emergencias != null){
+	    for (var i = 0; i < $scope.emergencias.length; i++) {
+	    	var marker = {
+	    		id: $scope.emergencias[i].id,
+	      		coords: {
+	        		latitude: $scope.emergencias[i].latitud,
+	        		longitude: $scope.emergencias[i].longitud
+	      		},
+	      		options:{
+	      			animation: 1,
+	      			visible:true
+	      		},
+	      		click: function(id){
+	      			//Buscar la emergencia con idEmergencia = id
+	      			var encontre = false;
+	      			var j = 0;
+	      			while(!encontre){
+	      				if($scope.marcadores[j].id == id)
+	      					encontre = true;
+	      				else
+	      					j++;
+	      			}
+	      			$scope.marcadores[j].options.animation = 0;
+	      			$scope.marcadores[j].windowOptions.visible = !$scope.marcadores[j].windowOptions.visible;
+	      			$scope.$apply();
+	      		},
+	      		windowOptions:{
+	      			visible:false
+	      		}
+	    	}
+	    	
+	    	$scope.marcadores.push(marker);
+	    };
+
+	    $scope.closeClick= function(idMarker){
+	    	var encontre = false;
+  			var j = 0;
+  			while(!encontre){
+  				if($scope.marcadores[j].id == idMarker)
+  					encontre = true;
+  				else
+  					j++;
+  			}
+	    	$scope.marcadores[j].windowOptions.visible = false;
+	    }
+	}
+	
+      
+   
+    
+}])
 
 
 

@@ -11,7 +11,8 @@ angular.module('app', [
   //'app.directives',
   'app.controllers','duScroll',
   'ui.bootstrap',
-  'ngAnimate'
+  'ngAnimate',
+  'uiGmapgoogle-maps'
 ]) 
   
 .config(['$urlRouterProvider', '$stateProvider','jwtInterceptorProvider', '$httpProvider', function($urlRouterProvider, $stateProvider,jwtInterceptorProvider, $httpProvider) {
@@ -20,17 +21,29 @@ angular.module('app', [
 		
 	$stateProvider.state('login', {url: '/login', templateUrl: 'views/login.html', controller: 'LoginController'})
 	.state('home', {url:'/', templateUrl: 'views/home.html',  controller: 'HomeController', data:{requiresLogin:true},
-		resolve:{
-	        load:function(EncuestaFactory){	          
-	          return EncuestaFactory.getEncuestasFinalizadas();
+		resolve:{	        
+	        load: function(EncuestaFactory){
+	        	return EncuestaFactory.getEncuestasFinalizadas();
 	        }
-	    }	})
+	    }	
+	})
 	
 	.state('encuesta', {
 		url: '/encuesta/{encuestaId}',
 		templateUrl: 'views/encuesta.html',
 		controller: 'EncuestaController',				
-	})	
+	})
+	
+	.state('emergencias', {
+		url:'/emergencia',
+		templateUrl: 'views/emergencias.html',
+		controller: 'EmergenciaController',
+		resolve:{
+	        load:function(EmergenciaFactory){	          
+	          return EmergenciaFactory.getEmergencias();
+	        }
+	    }
+	})
  
   jwtInterceptorProvider.tokenGetter = function(store){
 	  return store.get('tokenConsultora');

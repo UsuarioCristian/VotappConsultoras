@@ -70,8 +70,8 @@ value('version', '0.1')
 			.success(function(data){
 				store.set('encuestasFinalizadas', data);
 			})
-		}
-	
+		},
+		
 	}
 	
 }])
@@ -85,4 +85,27 @@ value('version', '0.1')
 	}	
 	
 }])
+
+.factory('EmergenciaFactory', ['$http', 'ApiEndpointFactory','store','jwtHelper' ,function($http, ApiEndpointFactory, store, jwtHelper) {
+		
+	return{
+		getEmergencias : function(){
+			
+			var tokenConsultora = store.get('tokenConsultora');
+			var decodedToken = jwtHelper.decodeToken(tokenConsultora);
+			var id = decodedToken.consultoraID;
+			
+			$http.get(ApiEndpointFactory.ApiEndpoint +'/Votapp/services/consultoras/protected/getAllEmergencias/'+ id)
+			.success(function(data){
+				store.set('emergencias', data);
+			})
+			.error(function(){
+				console.log("ERROR");
+			})
+		}
+	}	
+	
+}])
+
+
 
