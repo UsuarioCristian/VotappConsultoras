@@ -88,6 +88,7 @@ angular.module("app.controllers",[
 	$scope.logout = function() {
 		store.remove('tokenConsultora');
 		store.remove('encuestasFinalizadas');
+		store.remove('emergencias');
 		$state.go('login');
 	}
 	
@@ -443,7 +444,7 @@ angular.module("app.controllers",[
 	
 }])
 
-.controller('EmergenciaController', ['$scope', 'store',function($scope, store){
+.controller('EmergenciaController', ['$scope', 'store','EmergenciaFactory', function($scope, store, EmergenciaFactory){
 	$scope.map = { center: { latitude: -34.8962, longitude: -56.1708 }, zoom: 16};
 	
 	$scope.emergencias = store.get('emergencias');
@@ -472,6 +473,7 @@ angular.module("app.controllers",[
 	      			}
 	      			$scope.marcadores[j].options.animation = 0;
 	      			$scope.marcadores[j].windowOptions.visible = !$scope.marcadores[j].windowOptions.visible;
+	      			$scope.actualizarEmergencia($scope.marcadores[j].id);	      			
 	      			$scope.$apply();
 	      		},
 	      		windowOptions:{
@@ -480,6 +482,9 @@ angular.module("app.controllers",[
 	      		
 	      		nombreEncuestador:$scope.emergencias[i].nombreEncuestador,
 	    	}
+	    	
+	    	if($scope.emergencias[i].notificada)
+	    		marker.options.animation = 0;
 	    	
 	    	$scope.marcadores.push(marker);
 	    };
@@ -495,7 +500,29 @@ angular.module("app.controllers",[
   			}
 	    	$scope.marcadores[j].windowOptions.visible = false;
 	    }
-	}
+	    
+	    $scope.actualizarEmergencia = function(idEmergencia){
+	    	
+	    	/*Buscar la emergencia con id idEmergencia*/
+	    	var emergencias = store.get('emergencias');
+	    	var encontre = false;
+	    	var i = 0;
+	    	while (!encontre) {
+	    		if(emergencias[i].id === idEmergencia){
+	    			encontre = true;
+	    			EmergenciaFactory.notificarEmergencia(emergencias[i]);/*Esto es un POST a la base*/
+	    			emergencias[i].notificada = true;
+	    		}else{
+	    			i++;
+	    		}
+			}
+	    	
+	    	store.set('emergencias', emergencias);
+	    	    	
+	    }
+	    
+	    
+	}//End $scope.emergencias != null
 	
       
    

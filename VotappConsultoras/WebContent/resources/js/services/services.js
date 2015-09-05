@@ -102,6 +102,10 @@ value('version', '0.1')
 			.error(function(){
 				console.log("ERROR");
 			})
+		},
+	
+		notificarEmergencia : function(dataEmergencia){
+			return $http.post(ApiEndpointFactory.ApiEndpoint +'/Votapp/services/consultoras/protected/notificarEmergencia', dataEmergencia)
 		}
 	}	
 	
