@@ -1,15 +1,23 @@
-<div id="seccionEleccion" >
-	<div class="centrarEncuesta">
+<div id="seccionEncuesta" >
+	
 		<div class="container">
 			<div class="row">
-				<h1>Aqui se mostraran los datos de la encuesta seleccionada</h1>
 				<h3>{{encuesta.nombre}}</h3>
-				<p><a class="btn btn-lg btn-success" ui-sref="home">Volver a Home</a></p> 
-				
-				<div id="container" class="col-xs-6 col-sm-6 col-md-6" style="height:350px;"></div>
-				<div ng-show="encuesta.preguntarEdad" id="container2" class="col-xs-6 col-sm-6 col-md-6" style=" height:350px;"></div>
-				
+				<p><a class="btn btn-lg btn-success" ui-sref="home">Volver a Home</a></p>
 			</div>
+			<div class="row">
+				<div class="form-group col-xs-4 col-sm-4 col-md-4">
+					<label for="tipoGrafica">Seleccionar un tipo de grafica</label>
+					<select class="form-control" ng-model="graficaSeleccionada" ng-change= "changeChart()"
+						ng-options="grafica as grafica.nombre for grafica in tiposGraficas track by grafica.id">					
+					</select>
+				</div>	
+				
+
+				<div ng-show="graficaSeleccionada.id == 1" id="container" class="col-xs-6 col-sm-6 col-md-6" style="height:350px;"></div>
+				<div ng-show="graficaSeleccionada.id == 2" id="container2" class="col-xs-6 col-sm-6 col-md-6" style=" height:350px;"></div>
+			</div>
+			
 		</div>
-	</div>	
+	
 </div>

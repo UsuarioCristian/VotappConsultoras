@@ -283,6 +283,28 @@ angular.module("app.controllers",[
 	/*******************************/
 	/*******Seccion Graficas********/
 	/*******************************/
+	
+	$scope.tiposGraficas = [];
+	var graficaPie = {
+			nombre : 'Gráfica de Pie',
+			id : 1
+	}
+	$scope.tiposGraficas.push(graficaPie);
+	
+	if($scope.encuesta.preguntarEdad){
+		var graficaEdad = {
+				nombre : 'Gráfica columna segun edad',
+				id : 2
+		}
+		$scope.tiposGraficas.push(graficaEdad);
+	}
+	
+	$scope.graficaSeleccionada = $scope.tiposGraficas[0];
+		
+	/*********************************************************************/
+	/********************CARGA DE DATOS DEL PIE CHART*********************/
+	/*********************************************************************/
+	/*********************************************************************/
 	var data = [];
 	var resultado = $scope.encuesta.resultado;
 	if($scope.encuesta.porCandidato){
@@ -312,7 +334,9 @@ angular.module("app.controllers",[
 			data.push(dato);
 		}
 	}	
-		
+	/*****Como chartPie es la grafica que aparece por defecto, 
+	 * entonces se debe iniciar aqui (las demas lo hacen con el ng-change $scope.changeChart)**********/
+	
 	var chartPie = new Highcharts.Chart({
 	    chart: {
 	            plotBackgroundColor: null,
@@ -350,8 +374,10 @@ angular.module("app.controllers",[
 	        }]
 	})
 	
-	/*************************Grafica por Edad*************************/
-	/******************************************************************/
+	/****************************************************************************/
+	/********************CARGA DE DATOS DEL GRAFICA POR EDAD*********************/
+	/****************************************************************************/
+	/****************************************************************************/
 	if($scope.encuesta.preguntarEdad){
 		var serieEdad = [];
 		var de18a23 = resultado.mapEdad18a23;
@@ -395,50 +421,105 @@ angular.module("app.controllers",[
 			}
 		}	
 		
-		var chartColumEdad = new Highcharts.Chart({
-		    chart: {
-		    	type: 'column',
-		    	renderTo: 'container2',
-		    },
-		    title: {
-	            text: 'Votos por edad'
-	        },
-	        subtitle: {
-	        	text: 'Total encuestados: '+ $scope.encuesta.cantidadRespuestas,
-	        },
-	        xAxis: {
-	            categories: [
-	                '18 a 23',
-	                '24 a 30',
-	                '31 a 50',
-	                'Mas de 50',
-	               
-	            ],
-	            crosshair: true
-	        },
-	        yAxis: {
-	            min: 0,
-	            title: {
-	                text: 'Cantidad de votos'
-	            }
-	        },
-	        tooltip: {
-	            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-	            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-	                '<td style="padding:0"><b> {point.y}</b></td></tr>',
-	            footerFormat: '</table>',
-	            shared: true,
-	            useHTML: true
-	        },
-	        plotOptions: {
-	            column: {
-	                pointPadding: 0.2,
-	                borderWidth: 0
-	            }
-	        },
-	        series: serieEdad
-	        
-		})
+		
+	}
+	/******************************************************************************************************************/
+	/******************************************************************************************************************/
+	/************AQUI ES EN DONDE SE CARGAN LOS DATOS ANTERIORES DEPENDIENDO DE QUE GRAFICA SE SELECCIONA**************/
+	/******************************************************************************************************************/
+	/******************************************************************************************************************/
+	
+	$scope.changeChart = function(){
+		if($scope.graficaSeleccionada.id === 1){
+			
+			/*Igualo a null a todas las demas graficas*/
+			chartColumEdad = null;
+			
+			chartPie = new Highcharts.Chart({
+			    chart: {
+			            plotBackgroundColor: null,
+			            plotBorderWidth: null,
+			            plotShadow: false,
+			            type: 'pie',
+			            renderTo: 'container',
+			        },
+			        title: {
+			            text: 'Resultado encuesta (prueba)'
+			        },
+			        subtitle: {
+			        	text: 'Total encuestados: '+ $scope.encuesta.cantidadRespuestas,
+			        },
+			        tooltip: {
+			            pointFormat: '{series.name}: <b>{point.y}</b>'
+			        },
+			        plotOptions: {
+			            pie: {
+			                allowPointSelect: true,
+			                cursor: 'pointer',
+			                dataLabels: {
+			                    enabled: true,
+			                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+			                    style: {
+			                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+			                    }
+			                }
+			            }
+			        },
+			        series: [{
+			            name: "Total",
+			            colorByPoint: true,
+			            data : data
+			        }]
+			})
+		}else
+			if($scope.graficaSeleccionada.id === 2){
+				chartPie = null;
+				
+				var chartColumEdad = new Highcharts.Chart({
+				    chart: {
+				    	type: 'column',
+				    	renderTo: 'container2',
+				    },
+				    title: {
+			            text: 'Votos por edad'
+			        },
+			        subtitle: {
+			        	text: 'Total encuestados: '+ $scope.encuesta.cantidadRespuestas,
+			        },
+			        xAxis: {
+			            categories: [
+			                '18 a 23',
+			                '24 a 30',
+			                '31 a 50',
+			                'Mas de 50',
+			               
+			            ],
+			            crosshair: true
+			        },
+			        yAxis: {
+			            min: 0,
+			            title: {
+			                text: 'Cantidad de votos'
+			            }
+			        },
+			        tooltip: {
+			            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+			            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+			                '<td style="padding:0"><b> {point.y}</b></td></tr>',
+			            footerFormat: '</table>',
+			            shared: true,
+			            useHTML: true
+			        },
+			        plotOptions: {
+			            column: {
+			                pointPadding: 0.2,
+			                borderWidth: 0
+			            }
+			        },
+			        series: serieEdad
+			        
+				})
+			}
 	}
 	
 	
