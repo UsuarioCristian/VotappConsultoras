@@ -86,8 +86,9 @@ value('version', '0.1')
 	
 }])
 
-.factory('EmergenciaFactory', ['$http', 'ApiEndpointFactory','store','jwtHelper' ,function($http, ApiEndpointFactory, store, jwtHelper) {
-		
+.factory('EmergenciaFactory', ['$http', 'ApiEndpointFactory','store','jwtHelper',function($http, ApiEndpointFactory, store, jwtHelper) {
+	
+	var thereAEmergency = false;	
 	return{
 		getEmergencias : function(){
 			
@@ -106,7 +107,28 @@ value('version', '0.1')
 	
 		notificarEmergencia : function(dataEmergencia){
 			return $http.post(ApiEndpointFactory.ApiEndpoint +'/Votapp/services/consultoras/protected/notificarEmergencia', dataEmergencia)
-		}
+		},
+		
+		thereANewEmergency : function(){
+			var tokenConsultora = store.get('tokenConsultora');
+			var decodedToken = jwtHelper.decodeToken(tokenConsultora);
+			var id = decodedToken.consultoraID;
+			
+			$http.get(ApiEndpointFactory.ApiEndpoint +'/Votapp/services/consultoras/protected/thereANewEmergency/'+ id).
+				then(function(response) {
+					
+					thereAEmergency = response.data;
+					
+				  }, function(response) {
+					  console.log('error'+ response.data || "Request failed");
+					  thereAEmergency = false;
+				  });
+			
+		},
+		
+		getThereANewEmergency : function(){
+			return thereAEmergency;
+		},
 	}	
 	
 }])

@@ -34,13 +34,15 @@ angular.module('app', [
 	.state('encuesta', {
 		url: '/encuesta/{encuestaId}',
 		templateUrl: 'views/encuesta.html',
-		controller: 'EncuestaController',				
+		controller: 'EncuestaController',
+		data:{requiresLogin:true}
 	})
 	
 	.state('emergencias', {
 		url:'/emergencia',
 		templateUrl: 'views/emergencias.html',
-		controller: 'EmergenciaController',		
+		controller: 'EmergenciaController',
+		data:{requiresLogin:true}
 	})
  
   jwtInterceptorProvider.tokenGetter = function(store){

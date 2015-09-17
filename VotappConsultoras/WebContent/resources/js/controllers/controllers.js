@@ -48,7 +48,7 @@ angular.module("app.controllers",[
 }])
 
 
-.controller('HomeController', ['$scope', 'ConsultoraFactory', 'EleccionFactory','jwtHelper','store', '$state', function($scope, ConsultoraFactory, EleccionFactory, jwtHelper, store, $state){
+.controller('HomeController', ['$scope', 'ConsultoraFactory', 'EleccionFactory','jwtHelper','store', '$state', '$interval','EmergenciaFactory',function($scope, ConsultoraFactory, EleccionFactory, jwtHelper, store, $state,$interval,EmergenciaFactory){
 			
 	$scope.altaEncuestador = function(){
 		
@@ -90,7 +90,45 @@ angular.module("app.controllers",[
 		store.remove('encuestasFinalizadas');
 		store.remove('emergencias');
 		$state.go('login');
+		$scope.killtimer();
 	}
+	
+	/*****************************************************/
+	/*$interval para saber si existe una Emergencia nueva*/
+	/*****************************************************/
+	$scope.alertActivo = false;
+	var timer = $interval(function(){
+		EmergenciaFactory.thereANewEmergency(); // Ejecuto esta funcion para que se actualice EmergenciaFactory.thereAEmergency
+		if(EmergenciaFactory.getThereANewEmergency() && (!$scope.alertActivo)){
+			$scope.alertActivo = true;
+			swal({
+				  title: "Hay una nueva emergencia",
+				  text: "Se recomienda ir a la seccion de Emergencias",
+				  type: "warning",
+				  showCancelButton: true,
+				  confirmButtonColor: "#DD6B55",
+				  confirmButtonText: "Ir a Emergencias!",
+				  closeOnConfirm: true,
+				  html: false
+				}, function(){
+					$scope.alertActivo = false;
+					$state.go('emergencias');
+			});			
+			
+		}
+	},5000);
+
+	$scope.killtimer = function(){
+		if(angular.isDefined(timer)){
+			$interval.cancel(timer);
+            timer = undefined;
+        }
+	};
+	
+	$scope.$on('$destroy', function() {
+        // Make sure that the interval is destroyed too
+		$scope.killtimer();
+      });
 	
 	
 }])
