@@ -337,6 +337,14 @@ angular.module("app.controllers",[
 		$scope.tiposGraficas.push(graficaEdad);
 	}
 	
+	if($scope.encuesta.preguntarNivelEstudio){
+		var graficaEducacion = {
+				nombre : 'Gráfica columna segun nivel educativo',
+				id : 3
+		}
+		$scope.tiposGraficas.push(graficaEducacion);
+	}
+	
 	$scope.graficaSeleccionada = $scope.tiposGraficas[0];
 		
 	/*********************************************************************/
@@ -461,6 +469,56 @@ angular.module("app.controllers",[
 		
 		
 	}
+	
+	/****************************************************************************/
+	/****************CARGA DE DATOS DE GRAFICA POR NIVEL ESTUDIO*****************/
+	/****************************************************************************/
+	/****************************************************************************/
+	if($scope.encuesta.preguntarNivelEstudio){
+		var serieEstudio = [];
+		var primaria = resultado.mapNivelEstudioPrimaria;
+		var secundaria = resultado.mapNivelEstudioSecundaria;
+		var terciario = resultado.mapNivelEstudioTerciario;
+		var noSabe = resultado.mapNivelEstudioNoSabe;
+		
+		if($scope.encuesta.porCandidato){
+			var mapCandidatos = resultado.mapCandidatos;
+			var candidatos = $scope.encuesta.dataCandidatos;		
+			
+			for(var i=0; i < candidatos.length; i++){
+				var candidato = candidatos[i];
+				var cantidadPrimaria = primaria[candidato.id];
+				var cantidadSecundaria = secundaria[candidato.id];
+				var cantidadTerciario = terciario[candidato.id];
+				var cantidadNoSabe = noSabe[candidato.id];
+				
+				var valor = {
+		                name: candidato.nombre,
+		                data: [cantidadPrimaria, cantidadSecundaria, cantidadTerciario, cantidadNoSabe]
+		            }
+				serieEstudio.push(valor);
+			}
+		}else{
+			var mapPartidos = resultado.mapPartidos;
+			var partidos = $scope.encuesta.dataPartidos;
+			
+			for( var i = 0; i < partidos.length; i++){
+				var partido = partidos[i];
+				var cantidadPrimaria = primaria[partido.id];
+				var cantidadSecundaria = secundaria[partido.id];
+				var cantidadTerciario = terciario[partido.id];
+				var cantidadNoSabe = noSabe[partido.id];
+				
+				var valor = {
+		                name: partido.nombre,
+		                data: [cantidadPrimaria, cantidadSecundaria, cantidadTerciario, cantidadNoSabe]
+		            }
+				serieEstudio.push(valor);
+			}
+		}	
+		
+		
+	}
 	/******************************************************************************************************************/
 	/******************************************************************************************************************/
 	/************AQUI ES EN DONDE SE CARGAN LOS DATOS ANTERIORES DEPENDIENDO DE QUE GRAFICA SE SELECCIONA**************/
@@ -472,6 +530,7 @@ angular.module("app.controllers",[
 			
 			/*Igualo a null a todas las demas graficas*/
 			chartColumEdad = null;
+			chartColumEducacion = null;
 			
 			chartPie = new Highcharts.Chart({
 			    chart: {
@@ -512,6 +571,7 @@ angular.module("app.controllers",[
 		}else
 			if($scope.graficaSeleccionada.id === 2){
 				chartPie = null;
+				chartColumEducacion = null;
 				
 				var chartColumEdad = new Highcharts.Chart({
 				    chart: {
@@ -557,7 +617,55 @@ angular.module("app.controllers",[
 			        series: serieEdad
 			        
 				})
-			}
+			}else
+				if($scope.graficaSeleccionada.id === 3){
+					chartPie = null;
+					chartColumEdad = null;
+					var chartColumEducacion = new Highcharts.Chart({
+					    chart: {
+					    	type: 'column',
+					    	renderTo: 'container3',
+					    },
+					    title: {
+				            text: 'Votos por nivel estudio'
+				        },
+				        subtitle: {
+				        	text: 'Total encuestados: '+ $scope.encuesta.cantidadRespuestas,
+				        },
+				        xAxis: {
+				            categories: [
+				                'Primaria',
+				                'Secundaria',
+				                'Terciario',
+				                'No sabe',
+				               
+				            ],
+				            crosshair: true
+				        },
+				        yAxis: {
+				            min: 0,
+				            title: {
+				                text: 'Cantidad de votos'
+				            }
+				        },
+				        tooltip: {
+				            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+				            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+				                '<td style="padding:0"><b> {point.y}</b></td></tr>',
+				            footerFormat: '</table>',
+				            shared: true,
+				            useHTML: true
+				        },
+				        plotOptions: {
+				            column: {
+				                pointPadding: 0.2,
+				                borderWidth: 0
+				            }
+				        },
+				        series: serieEstudio
+				        
+					})
+				}
 	}
 	
 	
