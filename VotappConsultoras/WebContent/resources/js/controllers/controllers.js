@@ -345,6 +345,14 @@ angular.module("app.controllers",[
 		$scope.tiposGraficas.push(graficaEducacion);
 	}
 	
+	if($scope.encuesta.preguntarLista){
+		var graficaLista = {
+				nombre : 'Gráfica listas',
+				id : 4
+		}
+		$scope.tiposGraficas.push(graficaLista);
+	}
+	
 	$scope.graficaSeleccionada = $scope.tiposGraficas[0];
 		
 	/*********************************************************************/
@@ -515,10 +523,83 @@ angular.module("app.controllers",[
 		            }
 				serieEstudio.push(valor);
 			}
-		}	
-		
+		}		
 		
 	}
+	/****************************************************************************/
+	/****************************************************************************/
+	/****************CARGA DE DATOS DE GRAFICA POR LISTA*****************/
+	/****************************************************************************/
+	/****************************************************************************/
+	if($scope.encuesta.preguntarLista){
+		var serieLista = [{
+			name: "Votos",
+		    colorByPoint: true,
+		    data: []
+		}];
+		
+		var drilldownLista = {
+				series:[]
+		}
+		
+		var mapListas = resultado.mapListas;
+		if($scope.encuesta.porCandidato){
+			var mapCandidatos = resultado.mapCandidatos;
+			var candidatos = $scope.encuesta.dataCandidatos;		
+			
+			for(var i=0; i < candidatos.length; i++){				
+				var candidato = candidatos[i];
+				var serie = {
+						name: candidato.nombre,
+						id: candidato.id,
+						data:[]						
+				}
+				
+				for(var j = 0; j < candidato.dataListas.length; j++){
+					var dato = ['Lista '+candidato.dataListas[j].numero, mapListas[candidato.dataListas[j].id]];
+					serie.data.push(dato);
+				}		
+					
+				drilldownLista.series.push(serie);				
+				
+				var valor = {
+		                name: candidato.nombre,
+		                y : mapCandidatos[candidato.id],
+		                drilldown: candidato.id,
+		            }
+				serieLista[0].data.push(valor);
+			}
+		}else{
+			var mapPartidos = resultado.mapPartidos;
+			var partidos = $scope.encuesta.dataPartidos;
+			
+			for(var i=0; i < partidos.length; i++){				
+				var partido = partidos[i];
+				var serie = {
+						name: partido.nombre,
+						id: partido.id,
+						data:[]						
+				}
+				
+				for(var j = 0; j < partido.listas.length; j++){
+					var dato = ['Lista '+partido.listas[j].numero, mapListas[partido.listas[j].id]]
+					serie.data.push(dato);
+				}		
+					
+				drilldownLista.series.push(serie);				
+				
+				var valor = {
+		                name: partido.nombre,
+		                y : mapPartidos[partido.id],
+		                drilldown: partido.id,
+		            }
+				serieLista[0].data.push(valor);
+			}
+		}		
+		
+	}
+	
+	
 	/******************************************************************************************************************/
 	/******************************************************************************************************************/
 	/************AQUI ES EN DONDE SE CARGAN LOS DATOS ANTERIORES DEPENDIENDO DE QUE GRAFICA SE SELECCIONA**************/
@@ -526,8 +607,9 @@ angular.module("app.controllers",[
 	/******************************************************************************************************************/
 	
 	$scope.changeChart = function(){
-		if($scope.graficaSeleccionada.id === 1){
-			
+		
+		switch ($scope.graficaSeleccionada.id) {
+		case 1:
 			/*Igualo a null a todas las demas graficas*/
 			chartColumEdad = null;
 			chartColumEducacion = null;
@@ -568,104 +650,155 @@ angular.module("app.controllers",[
 			            data : data
 			        }]
 			})
-		}else
-			if($scope.graficaSeleccionada.id === 2){
-				chartPie = null;
-				chartColumEducacion = null;
-				
-				var chartColumEdad = new Highcharts.Chart({
-				    chart: {
-				    	type: 'column',
-				    	renderTo: 'container2',
-				    },
-				    title: {
-			            text: 'Votos por edad'
-			        },
-			        subtitle: {
-			        	text: 'Total encuestados: '+ $scope.encuesta.cantidadRespuestas,
-			        },
-			        xAxis: {
-			            categories: [
-			                '18 a 23',
-			                '24 a 30',
-			                '31 a 50',
-			                'Mas de 50',
-			               
-			            ],
-			            crosshair: true
-			        },
-			        yAxis: {
-			            min: 0,
-			            title: {
-			                text: 'Cantidad de votos'
-			            }
-			        },
-			        tooltip: {
-			            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-			            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-			                '<td style="padding:0"><b> {point.y}</b></td></tr>',
-			            footerFormat: '</table>',
-			            shared: true,
-			            useHTML: true
-			        },
-			        plotOptions: {
-			            column: {
-			                pointPadding: 0.2,
-			                borderWidth: 0
-			            }
-			        },
-			        series: serieEdad
-			        
-				})
-			}else
-				if($scope.graficaSeleccionada.id === 3){
-					chartPie = null;
-					chartColumEdad = null;
-					var chartColumEducacion = new Highcharts.Chart({
-					    chart: {
-					    	type: 'column',
-					    	renderTo: 'container3',
-					    },
-					    title: {
-				            text: 'Votos por nivel estudio'
-				        },
-				        subtitle: {
-				        	text: 'Total encuestados: '+ $scope.encuesta.cantidadRespuestas,
-				        },
-				        xAxis: {
-				            categories: [
-				                'Primaria',
-				                'Secundaria',
-				                'Terciario',
-				                'No sabe',
-				               
-				            ],
-				            crosshair: true
-				        },
-				        yAxis: {
-				            min: 0,
-				            title: {
-				                text: 'Cantidad de votos'
-				            }
-				        },
-				        tooltip: {
-				            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-				            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-				                '<td style="padding:0"><b> {point.y}</b></td></tr>',
-				            footerFormat: '</table>',
-				            shared: true,
-				            useHTML: true
-				        },
-				        plotOptions: {
-				            column: {
-				                pointPadding: 0.2,
-				                borderWidth: 0
-				            }
-				        },
-				        series: serieEstudio
-				        
-					})
-				}
+			break;
+		case 2:
+			chartPie = null;
+			chartColumEducacion = null;
+			
+			var chartColumEdad = new Highcharts.Chart({
+			    chart: {
+			    	type: 'column',
+			    	renderTo: 'container2',
+			    },
+			    title: {
+		            text: 'Votos por edad'
+		        },
+		        subtitle: {
+		        	text: 'Total encuestados: '+ $scope.encuesta.cantidadRespuestas,
+		        },
+		        xAxis: {
+		            categories: [
+		                '18 a 23',
+		                '24 a 30',
+		                '31 a 50',
+		                'Mas de 50',
+		               
+		            ],
+		            crosshair: true
+		        },
+		        yAxis: {
+		            min: 0,
+		            title: {
+		                text: 'Cantidad de votos'
+		            }
+		        },
+		        tooltip: {
+		            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+		            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+		                '<td style="padding:0"><b> {point.y}</b></td></tr>',
+		            footerFormat: '</table>',
+		            shared: true,
+		            useHTML: true
+		        },
+		        plotOptions: {
+		            column: {
+		                pointPadding: 0.2,
+		                borderWidth: 0
+		            }
+		        },
+		        series: serieEdad
+		        
+			})
+			
+			break;
+		case 3:
+			chartPie = null;
+			chartColumEdad = null;
+			var chartColumEducacion = new Highcharts.Chart({
+			    chart: {
+			    	type: 'column',
+			    	renderTo: 'container3',
+			    },
+			    title: {
+		            text: 'Votos por nivel estudio'
+		        },
+		        subtitle: {
+		        	text: 'Total encuestados: '+ $scope.encuesta.cantidadRespuestas,
+		        },
+		        xAxis: {
+		            categories: [
+		                'Primaria',
+		                'Secundaria',
+		                'Terciario',
+		                'No sabe',
+		               
+		            ],
+		            crosshair: true
+		        },
+		        yAxis: {
+		            min: 0,
+		            title: {
+		                text: 'Cantidad de votos'
+		            }
+		        },
+		        tooltip: {
+		            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+		            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+		                '<td style="padding:0"><b> {point.y}</b></td></tr>',
+		            footerFormat: '</table>',
+		            shared: true,
+		            useHTML: true
+		        },
+		        plotOptions: {
+		            column: {
+		                pointPadding: 0.2,
+		                borderWidth: 0
+		            }
+		        },
+		        series: serieEstudio
+		        
+			})
+			
+			break;
+		case 4:
+			chartPie = null;
+			chartColumEdad = null;
+			chartColumEducacion = null;
+			
+			var chartColumLista = new Highcharts.Chart({
+				chart: {
+		            renderTo: 'container4',
+		            type: 'column'            
+		        },
+		        title: {
+		            text: 'Votos con detalles de listas'
+		        },
+		        subtitle: {
+		            text: 'Click en las columnas para ver las listas'
+		        },
+		        xAxis: {
+		            type: 'category'
+		        },
+		        yAxis: {
+		            title: {
+		                text: 'Total de votos'
+		            }
+		        },
+		        legend: {
+		            enabled: false
+		        },
+		        plotOptions: {
+		            series: {
+		                borderWidth: 0,
+		                dataLabels: {
+		                    enabled: true
+		                }
+		            }
+		        },
+		        tooltip: {
+		            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+		            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b> votos<br/>'
+		        },
+		        series : serieLista,
+		        drilldown : drilldownLista,
+			});
+			
+			break;
+		default:
+			break;
+		}
+		
+		
 	}
 	
 	
