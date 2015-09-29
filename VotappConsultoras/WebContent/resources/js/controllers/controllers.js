@@ -441,10 +441,13 @@ angular.module("app.controllers",[
 		var de31a50 = resultado.mapEdad31a50;
 		var de51omas = resultado.mapEdad51omas;
 		
+		var valorVotoBlanco = -1;
+		var valorVotoNoSabe = -1;
+		
 		if($scope.encuesta.porCandidato){
 			var mapCandidatos = resultado.mapCandidatos;
 			var candidatos = $scope.encuesta.dataCandidatos;		
-			
+						
 			for(var i=0; i < candidatos.length; i++){
 				var candidato = candidatos[i];
 				var cantidad18a23 = de18a23[candidato.id];
@@ -456,7 +459,12 @@ angular.module("app.controllers",[
 		                name: candidato.nombre,
 		                data: [cantidad18a23, cantidad24a30, cantidad31a50, cantidadde51omas]
 		            }
-				serieEdad.push(valor);
+				if(candidato.id === 0)
+					valorVotoBlanco = valor;
+				else if(candidato.id === -1)
+					valorVotoNoSabe = valor;
+				else
+					serieEdad.push(valor);
 			}
 		}else{
 			var mapPartidos = resultado.mapPartidos;
@@ -473,11 +481,19 @@ angular.module("app.controllers",[
 		                name: partido.nombre,
 		                data: [cantidad18a23, cantidad24a30, cantidad31a50, cantidadde51omas]
 		            }
-				serieEdad.push(valor);
+				
+				if(partido.id === 0)
+					valorVotoBlanco = valor;
+				else if(partido.id === -1)
+					valorVotoNoSabe = valor;
+				else
+					serieEdad.push(valor);
 			}
 		}	
-		
-		
+		if(valorVotoBlanco !== -1) /*Cuidado, hay que ver q existan votos en blanco*/
+			serieEdad.push(valorVotoBlanco);
+		if(valorVotoNoSabe !== -1) /*Cuidado, hay que ver q existan respuestas "no sabe"*/
+			serieEdad.push(valorVotoNoSabe);
 	}
 	
 	/****************************************************************************/
@@ -490,6 +506,9 @@ angular.module("app.controllers",[
 		var secundaria = resultado.mapNivelEstudioSecundaria;
 		var terciario = resultado.mapNivelEstudioTerciario;
 		var noSabe = resultado.mapNivelEstudioNoSabe;
+		
+		var valorVotoBlanco = -1;
+		var valorVotoNoSabe = -1;
 		
 		if($scope.encuesta.porCandidato){
 			var mapCandidatos = resultado.mapCandidatos;
@@ -506,7 +525,12 @@ angular.module("app.controllers",[
 		                name: candidato.nombre,
 		                data: [cantidadPrimaria, cantidadSecundaria, cantidadTerciario, cantidadNoSabe]
 		            }
-				serieEstudio.push(valor);
+				if(candidato.id === 0)
+					valorVotoBlanco = valor;
+				else if(candidato.id === -1)
+					valorVotoNoSabe = valor;
+				else
+					serieEstudio.push(valor);
 			}
 		}else{
 			var mapPartidos = resultado.mapPartidos;
@@ -523,10 +547,19 @@ angular.module("app.controllers",[
 		                name: partido.nombre,
 		                data: [cantidadPrimaria, cantidadSecundaria, cantidadTerciario, cantidadNoSabe]
 		            }
-				serieEstudio.push(valor);
+				if(partido.id === 0)
+					valorVotoBlanco = valor;
+				else if(partido.id === -1)
+					valorVotoNoSabe = valor;
+				else
+					serieEstudio.push(valor);
 			}
-		}		
+		}
 		
+		if(valorVotoBlanco !== -1) /*Cuidado, hay que ver q existan votos en blanco*/
+			serieEdad.push(valorVotoBlanco);
+		if(valorVotoNoSabe !== -1) /*Cuidado, hay que ver q existan respuestas "no sabe"*/
+			serieEdad.push(valorVotoNoSabe);		
 	}
 	/****************************************************************************/
 	/****************************************************************************/
