@@ -233,6 +233,8 @@ angular.module("app.controllers",[
 				preguntarSexo : $scope.checkboxModel.value3,
 				preguntarNivelEstudio : $scope.checkboxModel.value4,
 				cantidadRespuestas : $scope.checkboxModel.value5,
+				preguntarSiTrabaja : $scope.checkboxModel.value6,
+				preguntarIngresos :  $scope.checkboxModel.value7,
 				idConsultora : decodedToken.consultoraID,
 				listaEncuestaDeptos : $scope.listaEncuestaDeptos
 				
