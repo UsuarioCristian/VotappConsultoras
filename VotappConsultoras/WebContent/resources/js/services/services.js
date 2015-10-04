@@ -14,6 +14,10 @@ value('version', '0.1')
 			encuestador.password = CryptoJS.SHA256(encuestador.password).toString(CryptoJS.enc.Hex);
 			
 			return $http.post(ApiEndpointFactory.ApiEndpoint +'/Votapp/services/consultoras/protected/crearEncuestador', encuestador);
+		},
+		actualizarCelular:function(dataUsuario){
+			return $http.post(ApiEndpointFactory.ApiEndpoint +'/Votapp/services/consultoras/protected/actualizarCelular', dataUsuario);
+
 		}
 	}
 	

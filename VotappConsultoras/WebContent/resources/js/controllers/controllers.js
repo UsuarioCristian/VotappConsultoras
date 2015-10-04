@@ -48,8 +48,46 @@ angular.module("app.controllers",[
 }])
 
 
-.controller('HomeController', ['$scope', 'ConsultoraFactory', 'EleccionFactory','jwtHelper','store', '$state', '$interval','EmergenciaFactory',function($scope, ConsultoraFactory, EleccionFactory, jwtHelper, store, $state,$interval,EmergenciaFactory){
+.controller('HomeController', ['$scope', 'ConsultoraFactory', 'EleccionFactory','jwtHelper','store', '$state', '$interval','EmergenciaFactory', function($scope, ConsultoraFactory, EleccionFactory, jwtHelper, store, $state,$interval,EmergenciaFactory){
 			
+		
+	$scope.actualizarCelular = function(){
+		
+		swal({   title: "An input!",   
+			text: "Write something interesting:",  
+			type: "input",   showCancelButton: true, 
+			closeOnConfirm: false,  
+			animation: "slide-from-top", 
+			inputPlaceholder: "Write something" }, 
+			function(inputValue){  
+				if (inputValue === false) 
+					return false;  
+				if (inputValue === "") {     
+					swal.showInputError("You need to write something!");   
+					return false   
+				
+				} 
+				
+				var tokenConsultora = store.get('tokenConsultora');
+				var tokenDecodificado = jwtHelper.decodeToken(tokenConsultora);
+				var dataUsuario = {
+						username : tokenDecodificado.username,
+						celular : inputValue				
+				}
+				ConsultoraFactory.actualizarCelular(dataUsuario).then(
+							function (response){
+								swal("Nice!", "You wrote: " + inputValue, "success"); 
+							},
+							function(response){
+								sweetAlert("Oops...", "Something went wrong!", "error");
+							}
+				)
+			}
+		);
+		
+		
+	}
+	
 	$scope.altaEncuestador = function(){
 		
 		//Busco el tokenConsultora para obtener los datos necesarios, en este caso su ID
