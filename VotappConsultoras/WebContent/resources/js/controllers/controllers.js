@@ -100,11 +100,14 @@ angular.module("app.controllers",[
 		ConsultoraFactory.crearEncuestador($scope.encuestador).then(
 				function(response){
 					$scope.encuestador = {};
+					swal("Encuestador creado!","","success");
 				},
 				
 				function(response){
 					//error messagge
 					console.log("Error en la creacion del Encuestador"+ response.data);
+					sweetAlert("Oops...", "Error al crear el usuario encuestador!", "error");
+
 				}
 		)
 		

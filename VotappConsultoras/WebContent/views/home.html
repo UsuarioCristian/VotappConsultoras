@@ -45,14 +45,23 @@
 		<div class="container">
 			<div style="height: auto;margin: 0px auto;" class="row">
 				<form style="width: 30%;margin: 0px auto;" role="form" >
+				<div class="row">
+						
+							<div class="form-group">										
+							
+								<label for="nombre" class="control-label">Nombre real del Encuestador:</label>
+								<input type="text" class="form-control" id="nombre" ng-model="encuestador.nombreEncuestador" placeholder="Nombre de usuario">
+							</div>
+					</div>
 					<div class="row">
 						
 							<div class="form-group">										
 							
 								<label for="nombre" class="control-label">Nombre Encuestador:</label>
-								<input type="text" class="form-control" id="nombre" ng-model="encuestador.username" placeholder="Username">
+								<input type="text" class="form-control" id="nombre" ng-model="encuestador.username" placeholder="NickName">
 							</div>
 					</div>
+					
 					<div class="row">	
 						
 							<div class="form-group">		
