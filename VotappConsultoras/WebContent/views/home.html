@@ -72,7 +72,7 @@
 						</div>
 					</div>	
 					<div class="row">				
-						<button type="submit" class="btn btn-success btn-block" id="confirmar" name="confirmar" ng-click="altaEncuestador()">Enviar</button>						
+						<button type="submit" class="btn btn-success btn-block" id="confirmar" name="confirmar" ng-click="altaEncuestador()">Crear</button>						
 					</div>
 				</form>
 			</div>
@@ -83,7 +83,6 @@
 <div id="third" ng-controller="ThirdController">
 	<div class="centrar">
 			<div class="container">
-					<a href="#first" du-smooth-scroll class="btn btn-success botonNav" > Inicio </a>
 					<button class="btn btn-info" ng-click="getEleccionesActuales()"> Mostrar Elecciones </button>
 			<div class="row">
 				<div class="form-group">
@@ -92,8 +91,8 @@
 							<input type="radio" ng-value="eleccion" ng-model="seleccion.eleccion" ng-click="openModal()" id="{{eleccion}}"> {{eleccion.nombre}}
 						</label>
 					</div>
-					<div>You chose {{seleccion.eleccion.nombre}}</div>
-
+<!-- 					<div>You chose {{seleccion.eleccion.nombre}}</div>
+ -->
 				</div>
 			</div>
 		</div>
@@ -111,6 +110,29 @@
 					</div>
 				</div>
 			</div>
+		</div>
+		</div>
+</div>
+<div id="fifth" ng-controller="EmergenciaController">
+	<div class="centrar">
+		<div class="container">
+			<div class="row">
+				<!-- <div class=col-md-8> -->
+					<ui-gmap-google-map center='map.center' zoom='map.zoom'>
+						<span ng-repeat="marker in marcadores">
+							<ui-gmap-marker coords="marker.coords" idkey="marker.id" click= "marker.click(marker.id)" options="marker.options" >
+								<ui-gmap-window options="marker.windowOptions" closeClick="closeClick(marker.id)">
+		                			<div>Encuestador : {{marker.nombreEncuestador}}</div>
+		            			</ui-gmap-window>
+							</ui-gmap-marker><!--show=marker.show -->
+						</span>
+					</ui-gmap-google-map>
+				<!-- </div> -->
+				<!-- <div class=col-md-4> -->
+					Nota:<br> Para reconocer una alerta haga click sobre ella, 
+					recuerde que una vez reconocida la misma quedará el marcador en el mapa pero no se le notificará nuevamente de esa alerta.
+			<!-- 	</div> -->
+			</div> 
 		</div>
 		</div>
 </div>

@@ -38,12 +38,12 @@ angular.module('app', [
 		data:{requiresLogin:true}
 	})
 	
-	.state('emergencias', {
-		url:'/emergencia',
-		templateUrl: 'views/emergencias.html',
-		controller: 'EmergenciaController',
-		data:{requiresLogin:true}
-	})
+//	.state('emergencias', {
+//		url:'/emergencia',
+//		templateUrl: 'views/emergencias.html',
+//		controller: 'EmergenciaController',
+//		data:{requiresLogin:true}
+//	})
  
   jwtInterceptorProvider.tokenGetter = function(store){
 	  return store.get('tokenConsultora');
