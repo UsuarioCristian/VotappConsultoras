@@ -53,17 +53,17 @@ angular.module("app.controllers",[
 		
 	$scope.actualizarCelular = function(){
 		
-		swal({   title: "An input!",   
-			text: "Write something interesting:",  
+		swal({   title: "Ingrese su celular!",   
+			text: "Recurde: A este numero se le enviará alertas de encuestadores en peligro:",  
 			type: "input",   showCancelButton: true, 
 			closeOnConfirm: false,  
 			animation: "slide-from-top", 
-			inputPlaceholder: "Write something" }, 
+			inputPlaceholder: "Celular nro." }, 
 			function(inputValue){  
 				if (inputValue === false) 
 					return false;  
 				if (inputValue === "") {     
-					swal.showInputError("You need to write something!");   
+					swal.showInputError("El campo es obligatorio!");   
 					return false   
 				
 				} 
@@ -76,10 +76,10 @@ angular.module("app.controllers",[
 				}
 				ConsultoraFactory.actualizarCelular(dataUsuario).then(
 							function (response){
-								swal("Nice!", "You wrote: " + inputValue, "success"); 
+								swal("Ok!", "Celular nro.: " + inputValue, "success"); 
 							},
 							function(response){
-								sweetAlert("Oops...", "Something went wrong!", "error");
+								sweetAlert("Oops...", "Ocurrió un error al ingresar celular!", "error");
 							}
 				)
 			}
