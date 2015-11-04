@@ -20,7 +20,7 @@ angular.module('app', [
 	$urlRouterProvider.otherwise('/');
 		
 	$stateProvider.state('login', {url: '/login', templateUrl: 'views/login.html', controller: 'LoginController'})
-	.state('home', {url:'/', templateUrl: 'views/home.html',  controller: 'HomeController', data:{requiresLogin:true},
+	.state('home', {url:'/', templateUrl: 'views/home.html',  controller: 'HomeController', data:{requiresLogin:true}, params: {irEmergencia: false },
 		resolve:{	        
 	        load: function(EncuestaFactory){
 	        	return EncuestaFactory.getEncuestasFinalizadas();
@@ -38,12 +38,12 @@ angular.module('app', [
 		data:{requiresLogin:true}
 	})
 	
-//	.state('emergencias', {
-//		url:'/emergencia',
-//		templateUrl: 'views/emergencias.html',
-//		controller: 'EmergenciaController',
-//		data:{requiresLogin:true}
-//	})
+	.state('emergencias', {
+		url:'/emergencia',
+		templateUrl: 'views/emergencias.html',
+		controller: 'EmergenciaController',
+		data:{requiresLogin:true}
+	})
  
   jwtInterceptorProvider.tokenGetter = function(store){
 	  return store.get('tokenConsultora');

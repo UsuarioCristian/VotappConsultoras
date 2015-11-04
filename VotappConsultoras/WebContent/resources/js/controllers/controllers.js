@@ -50,13 +50,16 @@ angular.module("app.controllers",[
 
 .controller('HomeController', ['$scope', 'ConsultoraFactory', 'EleccionFactory','jwtHelper','store', '$state', '$interval','EmergenciaFactory', function($scope, ConsultoraFactory, EleccionFactory, jwtHelper, store, $state,$interval,EmergenciaFactory){
 	$scope.isCollapsed = true;		
+
 		
 	$scope.actualizarCelular = function(){
 		
 		swal({   title: "Ingrese su celular!",   
-			text: "Recurde: A este numero se le enviará alertas de encuestadores en peligro:",  
+			text: "Recuerde: Este será el numero al cual se le envien las alertas de encuestadores en peligro.",  
 			type: "input",   showCancelButton: true, 
-			closeOnConfirm: false,  
+			closeOnConfirm: false,
+			confirmButtonText: "Aceptar",
+			cancelButtonText: "Cancelar",
 			animation: "slide-from-top", 
 			inputPlaceholder: "Celular nro." }, 
 			function(inputValue){  
@@ -167,12 +170,19 @@ angular.module("app.controllers",[
 				  html: false
 				}, function(){
 					$scope.alertActivo = false;
-					$state.go('emergencias');
+					$state.go ($state.current, {irEmergencia: true});
+					
 			});			
 			
 		}
 	},5000);
-
+	
+	if ($stateParams.irEmergencia){
+		$scope.alertActivo = true;
+		var someElement = angular.element(document.getElementById("fifth"));
+	    $document.scrollToElementAnimated(someElement);
+	}
+	
 	$scope.killtimer = function(){
 		if(angular.isDefined(timer)){
 			$interval.cancel(timer);
