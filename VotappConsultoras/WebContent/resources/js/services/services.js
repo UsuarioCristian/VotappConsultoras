@@ -18,6 +18,9 @@ value('version', '0.1')
 		actualizarCelular:function(dataUsuario){
 			return $http.post(ApiEndpointFactory.ApiEndpoint +'/Votapp/services/consultoras/protected/actualizarCelular', dataUsuario);
 
+		},
+		existeUsuario : function(username){
+			return $http.post(ApiEndpointFactory.ApiEndpoint + '/Votapp/services/consultoras/protected/existeUsuario', username)
 		}
 	}
 	

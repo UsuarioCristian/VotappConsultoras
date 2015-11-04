@@ -48,8 +48,9 @@ angular.module("app.controllers",[
 }])
 
 
-.controller('HomeController', ['$scope', 'ConsultoraFactory', 'EleccionFactory','jwtHelper','store', '$state', '$interval','EmergenciaFactory', '$stateParams', '$document', function($scope, ConsultoraFactory, EleccionFactory, jwtHelper, store, $state,$interval,EmergenciaFactory, $stateParams, $document){
-			
+.controller('HomeController', ['$scope', 'ConsultoraFactory', 'EleccionFactory','jwtHelper','store', '$state', '$interval','EmergenciaFactory', function($scope, ConsultoraFactory, EleccionFactory, jwtHelper, store, $state,$interval,EmergenciaFactory){
+	$scope.isCollapsed = true;		
+
 		
 	$scope.actualizarCelular = function(){
 		
@@ -88,6 +89,20 @@ angular.module("app.controllers",[
 		);
 		
 		
+	}
+	
+	$scope.existeUsuario = function(){
+		ConsultoraFactory.existeUsuario($scope.encuestador.username).then(
+				function(response){
+					if(response.data === true)
+						$scope.isCollapsed = false;
+					else
+						$scope.isCollapsed = true;
+				},
+				function(response){
+					console.log("Error en validacion de usuario: "+ response.data)
+				}
+			)
 	}
 	
 	$scope.altaEncuestador = function(){
