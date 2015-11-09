@@ -48,7 +48,7 @@ angular.module("app.controllers",[
 }])
 
 
-.controller('HomeController', ['$scope', 'ConsultoraFactory', 'EleccionFactory','jwtHelper','store', '$state', '$interval','EmergenciaFactory', function($scope, ConsultoraFactory, EleccionFactory, jwtHelper, store, $state,$interval,EmergenciaFactory){
+.controller('HomeController', ['$scope', 'ConsultoraFactory', 'EleccionFactory','jwtHelper','store', '$state', '$interval','EmergenciaFactory', '$stateParams','$document',function($scope, ConsultoraFactory, EleccionFactory, jwtHelper, store, $state,$interval,EmergenciaFactory, $stateParams, $document){
 	$scope.isCollapsed = true;		
 
 		
@@ -512,7 +512,7 @@ angular.module("app.controllers",[
 		if($scope.encuesta.porCandidato){
 			var mapCandidatos = resultado.mapCandidatos;
 			var candidatos = $scope.encuesta.dataCandidatos;		
-						
+
 			for(var i=0; i < candidatos.length; i++){
 				var candidato = candidatos[i];
 				var cantidad18a23 = de18a23[candidato.id];
@@ -622,9 +622,9 @@ angular.module("app.controllers",[
 		}
 		
 		if(valorVotoBlanco !== -1) /*Cuidado, hay que ver q existan votos en blanco*/
-			serieEdad.push(valorVotoBlanco);
+			serieEstudio.push(valorVotoBlanco);
 		if(valorVotoNoSabe !== -1) /*Cuidado, hay que ver q existan respuestas "no sabe"*/
-			serieEdad.push(valorVotoNoSabe);		
+			serieEstudio.push(valorVotoNoSabe);		
 	}
 	/****************************************************************************/
 	/****************************************************************************/
