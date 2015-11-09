@@ -420,6 +420,14 @@ angular.module("app.controllers",[
 		$scope.tiposGraficas.push(graficaLista);
 	}
 	
+	if($scope.encuesta.preguntarSiTrabaja){
+		var graficaTrabaja = {
+				nombre : 'Gráfica segun actividad laboral',
+				id : 5
+		}
+		$scope.tiposGraficas.push(graficaTrabaja);
+	}
+	
 	$scope.graficaSeleccionada = $scope.tiposGraficas[0];
 		
 	/*********************************************************************/
@@ -699,6 +707,48 @@ angular.module("app.controllers",[
 		
 	}
 	
+	/****************************************************************************/
+	/****************************************************************************/
+	/**********************CARGA DE DATOS DE GRAFICA TRABAJO*********************/
+	/****************************************************************************/
+	/****************************************************************************/
+	
+	if($scope.encuesta.preguntarSiTrabaja){
+		var serieTrabaja = [];
+		var trabaja = resultado.mapTrabaja;
+		var noTrabaja = resultado.mapNoTrabaja;
+		
+		if($scope.encuesta.porCandidato){
+			var candidatos = $scope.encuesta.dataCandidatos;
+			for (var i = 0; i < candidatos.length; i++) {
+				var candidato = candidatos[i];
+				var cantidadTrabaja = trabaja[candidato.id];
+				var cantidadNoTrabaja = noTrabaja[candidato.id];
+				
+				var valor = {
+						name : candidato.nombre,
+						data:[cantidadTrabaja, cantidadNoTrabaja]
+				}
+				serieTrabaja.push(valor);
+			}
+		}else{
+			var partidos = $scope.encuesta.dataPartidos;
+			for (var i = 0; i < partidos.length; i++) {
+				var partido = candidatos[i];
+				var cantidadTrabaja = trabaja[partido.id];
+				var cantidadNoTrabaja = noTrabaja[partido.id];
+				
+				var valor = {
+						name : partido.nombre,
+						data:[cantidadTrabaja, cantidadNoTrabaja]
+				}
+				serieTrabaja.push(valor);
+			}
+			
+		}		
+		
+	}
+	
 	
 	/******************************************************************************************************************/
 	/******************************************************************************************************************/
@@ -892,6 +942,54 @@ angular.module("app.controllers",[
 		        series : serieLista,
 		        drilldown : drilldownLista,
 			});
+			
+			break;
+		case 5:
+			chartPie = null;
+			chartColumEducacion = null;
+			chartColumEdad = null;
+			
+			var chartColumTrabaja = new Highcharts.Chart({
+			    chart: {
+			    	type: 'column',
+			    	renderTo: 'container5',
+			    },
+			    title: {
+		            text: 'Votos por actividad laboral'
+		        },
+		        subtitle: {
+		        	text: 'Total encuestados: '+ $scope.encuesta.cantidadRespuestas,
+		        },
+		        xAxis: {
+		            categories: [
+		                'Trabaja',
+		                'No trabaja'		               
+		            ],
+		            crosshair: true
+		        },
+		        yAxis: {
+		            min: 0,
+		            title: {
+		                text: 'Cantidad de votos'
+		            }
+		        },
+		        tooltip: {
+		            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+		            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+		                '<td style="padding:0"><b> {point.y}</b></td></tr>',
+		            footerFormat: '</table>',
+		            shared: true,
+		            useHTML: true
+		        },
+		        plotOptions: {
+		            column: {
+		                pointPadding: 0.2,
+		                borderWidth: 0
+		            }
+		        },
+		        series: serieTrabaja
+		        
+			})
 			
 			break;
 		default:
