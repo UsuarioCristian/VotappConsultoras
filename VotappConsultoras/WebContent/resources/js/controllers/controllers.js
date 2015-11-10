@@ -438,6 +438,14 @@ angular.module("app.controllers",[
 		$scope.tiposGraficas.push(graficaIngresos);
 	}
 	
+	if($scope.encuesta.preguntarSexo){
+		var graficaGenero = {
+				nombre : 'Gráfica segun género',
+				id : 7
+		}
+		$scope.tiposGraficas.push(graficaGenero);
+	}
+	
 	$scope.graficaSeleccionada = $scope.tiposGraficas[0];
 		
 	/*********************************************************************/
@@ -805,6 +813,94 @@ angular.module("app.controllers",[
 		}
 	}
 	
+	/****************************************************************************/
+	/****************************************************************************/
+	/**********************CARGA DE DATOS DE GRAFICA INGRESOS*********************/
+	/****************************************************************************/
+	/****************************************************************************/
+	
+	if($scope.encuesta.preguntarSexo){
+		var serieGenero = [{
+			name: "Votos",
+		    colorByPoint: true,
+		    data: []
+		}];
+		var drilldownGenero = {
+				series:[]
+		}
+		var mapMasculino = resultado.mapGeneroMas;
+		var mapOtro = resultado.mapGeneroOtro;
+		var mapFemenino = resultado.mapGeneroFem;
+		
+		if($scope.encuesta.porCandidato){
+			var mapCandidatos = resultado.mapCandidatos;
+			var candidatos = $scope.encuesta.dataCandidatos;
+			
+			for(var i=0; i < candidatos.length; i++){
+				var candidato = candidatos[i];
+				var cantidad = mapCandidatos[candidato.id];
+				var valor = {
+		                name: candidato.nombre,
+		                y: cantidad,
+		                drilldown: candidato.id
+		            }
+				serieGenero[0].data.push(valor);
+				
+				var serie = {
+						name: candidato.nombre,
+						id: candidato.id,
+						data:[]						
+				}				
+				
+				var datoMasc = ['Masculino', mapMasculino[candidato.id]];
+				var datoFem = ['Femenino', mapFemenino[candidato.id]];
+				var datoOtro = ['Otro', mapOtro[candidato.id]];
+				serie.data.push(datoMasc);				
+				serie.data.push(datoFem);				
+				serie.data.push(datoOtro);
+				
+				drilldownGenero.series.push(serie);
+				
+			}		
+			
+		}else{
+			var mapPartidos = resultado.mapPartidos;
+			var partidos = $scope.encuesta.dataPartidos;
+			
+			for(var i = 0; i < partidos.length; i++){
+				var partido = partidos[i];
+				var cantidad = mapPartidos[partido.id];
+				var valor = {
+		                name: partido.nombre,
+		                y: cantidad,
+		                drilldown: partido.id
+		            }
+				serieGenero[0].data.push(valor);
+				
+				var serie = {
+						name: partido.nombre,
+						id: partido.id,
+						data:[]						
+				}				
+				
+				var datoMasc = ['Masculino', mapMasculino[partido.id]];
+				var datoFem = ['Femenino', mapFemenino[partido.id]];
+				var datoOtro = ['Otro', mapOtro[partido.id]];
+				serie.data.push(datoMasc);				
+				serie.data.push(datoFem);				
+				serie.data.push(datoOtro);
+				
+				drilldownGenero.series.push(serie);
+			}
+		}
+		
+
+		
+		
+		
+		
+	}
+	
 	
 	/******************************************************************************************************************/
 	/******************************************************************************************************************/
@@ -1095,6 +1191,46 @@ angular.module("app.controllers",[
 		            }
 		        },
 		        series: serieIngresos
+		        
+			})
+			
+			break;
+		case 7:
+			chartPie = null;
+			chartColumEducacion = null;
+			chartColumEdad = null;
+			chartColumTrabaja = null;
+			chartColumIngresos = null;
+			
+			var chartColumIngresos = new Highcharts.Chart({
+			    chart: {
+			    	type: 'pie',
+			    	renderTo: 'container7',
+			    },
+			    title: {
+		            text: 'Votos segun genero'
+		        },
+		        subtitle: {
+		        	text: 'Total encuestados: '+ $scope.encuesta.cantidadRespuestas,
+		        },
+		        tooltip: {
+		            pointFormat: '{series.name}: <b>{point.y}</b>'
+		        },
+		        plotOptions: {
+		            pie: {
+		                allowPointSelect: true,
+		                cursor: 'pointer',
+		                dataLabels: {
+		                    enabled: true,
+		                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+		                    style: {
+		                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+		                    }
+		                }
+		            }
+		        },
+		        series: serieGenero,
+		        drilldown : drilldownGenero
 		        
 			})
 			
