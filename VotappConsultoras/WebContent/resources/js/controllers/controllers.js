@@ -385,9 +385,11 @@ angular.module("app.controllers",[
 		}			
 	}
 	
-	/*******************************/
-	/*******Seccion Graficas********/
-	/*******************************/
+	/****************************************************************************************************************/
+	/****************************************************************************************************************/
+	/********************************************SECCION GRAFICAS****************************************************/
+	/****************************************************************************************************************/
+	/****************************************************************************************************************/
 	
 	$scope.tiposGraficas = [];
 	var graficaPie = {
@@ -426,6 +428,22 @@ angular.module("app.controllers",[
 				id : 5
 		}
 		$scope.tiposGraficas.push(graficaTrabaja);
+	}
+	
+	if($scope.encuesta.preguntarIngresos){
+		var graficaIngresos = {
+				nombre : 'Gráfica segun rango ingresos',
+				id : 6
+		}
+		$scope.tiposGraficas.push(graficaIngresos);
+	}
+	
+	if($scope.encuesta.preguntarSexo){
+		var graficaGenero = {
+				nombre : 'Gráfica segun género',
+				id : 7
+		}
+		$scope.tiposGraficas.push(graficaGenero);
 	}
 	
 	$scope.graficaSeleccionada = $scope.tiposGraficas[0];
@@ -749,6 +767,140 @@ angular.module("app.controllers",[
 		
 	}
 	
+	/****************************************************************************/
+	/****************************************************************************/
+	/**********************CARGA DE DATOS DE GRAFICA INGRESOS*********************/
+	/****************************************************************************/
+	/****************************************************************************/
+	
+	if($scope.encuesta.preguntarIngresos){
+		var serieIngresos = [];
+		var mapIngresos1 = resultado.mapIngresos1;
+		var mapIngresos2 = resultado.mapIngresos2;
+		var mapIngresos3 = resultado.mapIngresos3;
+		var mapIngresos4 = resultado.mapIngresos4;
+		
+		if($scope.encuesta.porCandidato){
+			var candidatos = $scope.encuesta.dataCandidatos;
+			for (var i = 0; i < candidatos.length; i++) {
+				var candidato = candidatos[i];
+				var cantidadIngreso1 = mapIngresos1[candidato.id];
+				var cantidadIngreso2 = mapIngresos2[candidato.id];
+				var cantidadIngreso3 = mapIngresos3[candidato.id];
+				var cantidadIngreso4 = mapIngresos4[candidato.id];
+				
+				var valor = {
+						name : candidato.nombre,
+						data:[cantidadIngreso1, cantidadIngreso2, cantidadIngreso3, cantidadIngreso4]
+				}
+				serieIngresos.push(valor);
+			}
+		}else{
+			var partidos = $scope.encuesta.dataPartidos;
+			for (var i = 0; i < partidos.length; i++) {
+				var partido = partidos[i];
+				var cantidadIngreso1 = mapIngresos1[partido.id];
+				var cantidadIngreso2 = mapIngresos2[partido.id];
+				var cantidadIngreso3 = mapIngresos3[partido.id];
+				var cantidadIngreso4 = mapIngresos4[partido.id];
+				
+				var valor = {
+						name : candidato.nombre,
+						data:[cantidadIngreso1, cantidadIngreso2, cantidadIngreso3, cantidadIngreso4]
+				}
+				serieIngresos.push(valor);
+			}
+		}
+	}
+	
+	/****************************************************************************/
+	/****************************************************************************/
+	/**********************CARGA DE DATOS DE GRAFICA INGRESOS*********************/
+	/****************************************************************************/
+	/****************************************************************************/
+	
+	if($scope.encuesta.preguntarSexo){
+		var serieGenero = [{
+			name: "Votos",
+		    colorByPoint: true,
+		    data: []
+		}];
+		var drilldownGenero = {
+				series:[]
+		}
+		var mapMasculino = resultado.mapGeneroMas;
+		var mapOtro = resultado.mapGeneroOtro;
+		var mapFemenino = resultado.mapGeneroFem;
+		
+		if($scope.encuesta.porCandidato){
+			var mapCandidatos = resultado.mapCandidatos;
+			var candidatos = $scope.encuesta.dataCandidatos;
+			
+			for(var i=0; i < candidatos.length; i++){
+				var candidato = candidatos[i];
+				var cantidad = mapCandidatos[candidato.id];
+				var valor = {
+		                name: candidato.nombre,
+		                y: cantidad,
+		                drilldown: candidato.id
+		            }
+				serieGenero[0].data.push(valor);
+				
+				var serie = {
+						name: candidato.nombre,
+						id: candidato.id,
+						data:[]						
+				}				
+				
+				var datoMasc = ['Masculino', mapMasculino[candidato.id]];
+				var datoFem = ['Femenino', mapFemenino[candidato.id]];
+				var datoOtro = ['Otro', mapOtro[candidato.id]];
+				serie.data.push(datoMasc);				
+				serie.data.push(datoFem);				
+				serie.data.push(datoOtro);
+				
+				drilldownGenero.series.push(serie);
+				
+			}		
+			
+		}else{
+			var mapPartidos = resultado.mapPartidos;
+			var partidos = $scope.encuesta.dataPartidos;
+			
+			for(var i = 0; i < partidos.length; i++){
+				var partido = partidos[i];
+				var cantidad = mapPartidos[partido.id];
+				var valor = {
+		                name: partido.nombre,
+		                y: cantidad,
+		                drilldown: partido.id
+		            }
+				serieGenero[0].data.push(valor);
+				
+				var serie = {
+						name: partido.nombre,
+						id: partido.id,
+						data:[]						
+				}				
+				
+				var datoMasc = ['Masculino', mapMasculino[partido.id]];
+				var datoFem = ['Femenino', mapFemenino[partido.id]];
+				var datoOtro = ['Otro', mapOtro[partido.id]];
+				serie.data.push(datoMasc);				
+				serie.data.push(datoFem);				
+				serie.data.push(datoOtro);
+				
+				drilldownGenero.series.push(serie);
+			}
+		}
+		
+
+		
+		
+		
+		
+	}
+	
 	
 	/******************************************************************************************************************/
 	/******************************************************************************************************************/
@@ -988,6 +1140,97 @@ angular.module("app.controllers",[
 		            }
 		        },
 		        series: serieTrabaja
+		        
+			})
+			
+			break;
+		case 6:
+			chartPie = null;
+			chartColumEducacion = null;
+			chartColumEdad = null;
+			chartColumTrabaja = null;
+			
+			var chartColumIngresos = new Highcharts.Chart({
+			    chart: {
+			    	type: 'column',
+			    	renderTo: 'container6',
+			    },
+			    title: {
+		            text: 'Votos segun rangos de ingresos'
+		        },
+		        subtitle: {
+		        	text: 'Total encuestados: '+ $scope.encuesta.cantidadRespuestas,
+		        },
+		        xAxis: {
+		            categories: [
+		                'menos de 10.000',
+		                'de 10.000 a 21.365',
+		                'de 21.366 a 40.000',
+		                'mas de 40.000'
+		            ],
+		            crosshair: true
+		        },
+		        yAxis: {
+		            min: 0,
+		            title: {
+		                text: 'Cantidad de votos'
+		            }
+		        },
+		        tooltip: {
+		            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+		            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+		                '<td style="padding:0"><b> {point.y}</b></td></tr>',
+		            footerFormat: '</table>',
+		            shared: true,
+		            useHTML: true
+		        },
+		        plotOptions: {
+		            column: {
+		                pointPadding: 0.2,
+		                borderWidth: 0
+		            }
+		        },
+		        series: serieIngresos
+		        
+			})
+			
+			break;
+		case 7:
+			chartPie = null;
+			chartColumEducacion = null;
+			chartColumEdad = null;
+			chartColumTrabaja = null;
+			chartColumIngresos = null;
+			
+			var chartColumIngresos = new Highcharts.Chart({
+			    chart: {
+			    	type: 'pie',
+			    	renderTo: 'container7',
+			    },
+			    title: {
+		            text: 'Votos segun genero'
+		        },
+		        subtitle: {
+		        	text: 'Total encuestados: '+ $scope.encuesta.cantidadRespuestas,
+		        },
+		        tooltip: {
+		            pointFormat: '{series.name}: <b>{point.y}</b>'
+		        },
+		        plotOptions: {
+		            pie: {
+		                allowPointSelect: true,
+		                cursor: 'pointer',
+		                dataLabels: {
+		                    enabled: true,
+		                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+		                    style: {
+		                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+		                    }
+		                }
+		            }
+		        },
+		        series: serieGenero,
+		        drilldown : drilldownGenero
 		        
 			})
 			
