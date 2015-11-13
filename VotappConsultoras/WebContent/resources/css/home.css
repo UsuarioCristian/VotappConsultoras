@@ -61,7 +61,7 @@ body{
 }
 
 
-h1 {
+#first h1 {
 	color: beige;
     font-size: -webkit-xxx-large;
     font-family: inherit;
